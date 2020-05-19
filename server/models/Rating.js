@@ -9,6 +9,9 @@ const ratingSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  mentorId: {
+    type: Schema.Types.ObjectId,
+  },
   user: { type: Schema.Types.ObjectId, ref: 'User' },
 });
 const Rating = mongoose.model('Rating', ratingSchema);

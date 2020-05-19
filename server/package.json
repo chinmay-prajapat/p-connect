@@ -12,6 +12,7 @@
     "bootstrap": "^4.3.1",
     "concurrently": "^5.0.0",
     "cors": "^2.8.5",
+    "ejs": "^1.0.0",
     "express": "^4.17.1",
     "formidable": "^1.2.1",
     "google-maps-react": "^2.0.2",
@@ -27,6 +28,7 @@
     "react-materialize": "^3.4.1",
     "react-pdf": "^4.1.0",
     "react-select": "^3.0.8",
+    "shortid": "^2.2.15",
     "stripe": "^8.52.0",
     "uuid": "^8.0.0",
     "validator": "^11.1.0"

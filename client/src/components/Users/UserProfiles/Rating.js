@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { FaStar } from 'react-icons/fa';
 import decode from 'jwt-decode';
 import axios from 'axios';
+
 const StarRating = (props) => {
-  const [rating, setRating] = useState(null);
+  console.log('mentorId', props.mentorId);
+  const [rating, setRating] = useState(props.rating);
   const [hover, setHover] = useState(null);
+  console.log(props.rating, 'StarRating');
 
   return (
     <div>
@@ -17,26 +20,19 @@ const StarRating = (props) => {
               type="radio"
               name="rating"
               value={ratingValue}
-              // onClick={() => setRating(ratingValue)}
-              onLoad={() => {
-                axios.get(`http://localhost:5000/api/rating/`).then((res) => {
-                  console.log(res.data.rating);
-                  setRating(res.data.rating.rating);
-                });
-              }}
               onClick={() => {
                 setRating(ratingValue);
                 const formData = {
                   rating: ratingValue,
                   user: decode(localStorage.getItem('token'))._id,
+                  mentorId: props.mentorId,
                 };
                 axios
                   .post(`http://localhost:5000/api/rating/register`, formData)
                   .then((res) => {
-                    console.log(res.data.rating);
-                    setRating(res.data.rating.rating);
+                    console.log(res.data);
                   });
-                console.log(ratingValue);
+                console.log('my rating value', ratingValue);
               }}
             />
             <FaStar

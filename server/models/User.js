@@ -125,6 +125,7 @@ const userSchema = new Schema({
     default: true,
   },
   rating: [{ type: Schema.Types.ObjectId, ref: 'Rating' }],
+  ratingGiver: [{ type: Schema.Types.ObjectId, ref: 'Rating' }],
   event: [{ type: Schema.Types.ObjectId, ref: 'Event' }],
   message: [{ type: Schema.Types.ObjectId, ref: 'Message' }],
   contributeId: [{ type: Schema.Types.ObjectId, ref: 'Contribute' }],

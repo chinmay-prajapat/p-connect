@@ -100,6 +100,15 @@ router.get('/display1/message/:userId', function (req, res) {
       res.send(user.message);
     });
 });
+router.get('/display1/rating/:userId', function (req, res) {
+  console.log(req.params.userId);
+  User.findById(req.params.userId)
+    .populate('rating')
+    .then((user) => {
+      console.log(user);
+      res.send(user.rating);
+    });
+});
 
 router.post('/login', authenticateAccess, function (req, res) {
   const body = req.body;
@@ -177,6 +186,7 @@ router.put('/update/:id', function (req, res) {
       res.send(err);
     });
 });
+
 router.put('/rating/:id', function (req, res) {
   const body = req.body;
   User.findByIdAndUpdate(
