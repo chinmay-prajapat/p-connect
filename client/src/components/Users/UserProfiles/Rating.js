@@ -27,6 +27,9 @@ const StarRating = (props) => {
                   user: decode(localStorage.getItem('token'))._id,
                   mentorId: props.mentorId,
                 };
+                console.log('mentorid', formData.mentorId);
+                console.log('userid', formData.user);
+
                 axios
                   .post(`http://localhost:5000/api/rating/register`, formData)
                   .then((res) => {

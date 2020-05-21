@@ -57,6 +57,7 @@ class Profile extends Component {
                 mentorId={this.props.location.state.record._id}
               />
             </div>
+            <div>{this.state.rating}/5</div>
 
             <h6 className="card-title">
               {this.props.location.state.record.stream}
