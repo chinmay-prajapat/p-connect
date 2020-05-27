@@ -20,6 +20,7 @@ import Img from './MyProfile/ProfilePic';
 import Edit from './Admin/Access/Edit';
 import Contribute from './Professional/Contribute';
 import Login from './LogIn';
+import HighRated from './HighRated/HighRated';
 import PEvent from './EEvent';
 import UserProfile from './Users/UserProfiles/index';
 import Follower from './Professional/Followers/index';
@@ -29,6 +30,7 @@ import Message from './Messages/Message';
 import Request from './Professional/Requests/index';
 import UserMentor from './Users/Mentor/index';
 import updateProfile from './MyProfile/updateProfile';
+import ProfileUser from './MyProfile/ProfileUser';
 import Follow from './Users/Follow/index';
 import Reply from './Messages/Reply';
 import checkSubscription from './LogIn/checkSubscription';
@@ -37,6 +39,7 @@ import ProfileRequest from './Admin/ProfileRequest/ProfileRequest';
 import Transcation from './Admin/Transcation/index';
 import Subscriber from './Admin/Subscriber/Subscriber';
 import Pay from './Stripe/Stripe';
+import HighRate from './HighRated/HighRate';
 import ViewFeed from './View /ViewFeed';
 import LogOut from './LogOut/LogOut';
 import Terms from './Register/Terms';
@@ -91,6 +94,8 @@ class App extends Component {
               path="/viewProfile/:id"
               component={viewProfile}
             />
+            <Route exact={true} path="/highrated" component={HighRated} />
+            <Route exact={true} path="/highrate/:id" component={HighRate} />
             <Route exact={true} path="/pay" component={Pay} />
             <Route exact={true} path="/img" component={Img} />
             <Route exact={true} path="/comment" component={Comment} />
@@ -102,6 +107,11 @@ class App extends Component {
             <Route exact={true} path="/subscriber" component={Subscriber} />
             <Route exact={true} path="/" component={Home} />
             <Route exact={true} path="/register" component={Register} />
+            <Route
+              exact={true}
+              path="/profileuser/:id"
+              component={ProfileUser}
+            />
             <Route exact={true} path="/follow" component={Follow} />
             <Route exact={true} path="/uregister" component={UserRegister} />
             <Route exact={true} path="/transcation" component={Transcation} />

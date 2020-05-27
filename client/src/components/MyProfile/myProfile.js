@@ -85,16 +85,29 @@ export default class UserProfile extends Component {
           </div>
         </div>
         <div style={{ textAlign: 'center' }}>
-          <Link
-            className="btn btn-primary btn-lg active"
-            to={{
-              pathname: `/updateProfile/${data._id}`,
-              state: { data },
-            }}
-            style={{ color: 'white', fontSize: '30px' }}
-          >
-            Edit Profile
-          </Link>
+          {data.roles === 'user' ? (
+            <Link
+              className="btn btn-primary btn-lg active"
+              to={{
+                pathname: `/profileuser/${data._id}`,
+                state: { data },
+              }}
+              style={{ color: 'white', fontSize: '30px' }}
+            >
+              Edit Profile
+            </Link>
+          ) : (
+            <Link
+              className="btn btn-primary btn-lg active"
+              to={{
+                pathname: `/updateProfile/${data._id}`,
+                state: { data },
+              }}
+              style={{ color: 'white', fontSize: '30px' }}
+            >
+              Edit Profile
+            </Link>
+          )}
         </div>
       </div>
     );

@@ -81,17 +81,20 @@ class UserHeader extends Component {
             <div style={myCol} className="col">
               <Link
                 style={{ fontSize: '20px', color: 'white' }}
+                to="/highrating"
+              >
+                High Rated
+              </Link>
+            </div>
+            <div style={myCol} className="col">
+              <Link
+                style={{ fontSize: '20px', color: 'white' }}
                 to="/myProfile"
               >
                 Profile
               </Link>
             </div>
 
-            <div style={myCol} className="col">
-              <Link style={{ fontSize: '20px', color: 'white' }} to="/invite">
-                Invite
-              </Link>
-            </div>
             <div style={myCol} className="col">
               <Link style={{ fontSize: '20px', color: 'white' }} to="/about">
                 About

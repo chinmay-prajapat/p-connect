@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import decode from 'jwt-decode';
 import Image from '../../uploads/uploadsLocation';
-class updateProfile extends Component {
+class ProfileUser extends Component {
   constructor(props) {
     super(props);
 
@@ -16,7 +16,6 @@ class updateProfile extends Component {
       experience: '',
       password: '',
       repeatPassword: '',
-      notice: '',
       certificate: '',
       profession: '',
       img: '',
@@ -48,7 +47,6 @@ class updateProfile extends Component {
 
     const formData = {
       firstName: this.state.firstName,
-      notice: this.state.notice,
       lastName: this.state.lastName,
       stream: this.state.stream,
       city: this.state.city,
@@ -103,7 +101,6 @@ class updateProfile extends Component {
       stream: data.stream,
       city: data.city,
       email: data.email,
-      notice: data.notice,
       phone: data.phone,
       experience: data.experience,
       password: data.password,
@@ -135,23 +132,6 @@ class updateProfile extends Component {
         >
           Update Your Profile
         </h3>
-        <div className="row">
-          <div className="col-sm-6 my-1" style={{ left: '280px' }}>
-            <label style={myStyle} htmlFor="firstName">
-              Add Notice
-            </label>
-            <textarea
-              placeholder="Display notice for viewer"
-              rows="4"
-              col="4"
-              type="text"
-              value={this.state.notice}
-              onChange={this.handleChange}
-              name="notice"
-              className="form-control"
-            />
-          </div>
-        </div>
         <div className="form-row align-items-center">
           <div className="col-sm-3 my-1" style={{ left: '280px' }}>
             <label style={myStyle} htmlFor="firstName">
@@ -366,4 +346,4 @@ class updateProfile extends Component {
     );
   }
 }
-export default updateProfile;
+export default ProfileUser;

@@ -131,7 +131,9 @@ router.get('/display/invites/:userId', function (req, res) {
 router.get('/display/comment/:userId', function (req, res) {
   // console.log(req.params.userId);
   User.findById(req.params.userId)
+    .sort({ date: -1 })
     .populate('comment')
+
     .then((user) => {
       // console.log(user.event);
       res.send(user.comment);
@@ -203,6 +205,7 @@ router.post('/update1/:id', function (req, res) {
       underGraduateCollege: req.body.underGraduateCollege,
       postGraduateCollege: req.body.postGraduateCollege,
       bio: req.body.bio,
+      notice: req.body.notice,
     },
     { new: true }
   )

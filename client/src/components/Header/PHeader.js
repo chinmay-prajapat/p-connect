@@ -82,6 +82,11 @@ class PHeader extends Component {
             </Link>
           </div>
           <div style={myCol} className="col">
+            <Link style={{ fontSize: '20px', color: 'white' }} to="/highrated">
+              High Rated
+            </Link>
+          </div>
+          <div style={myCol} className="col">
             <Link style={{ fontSize: '20px', color: 'white' }} to="/myProfile">
               Profile
             </Link>

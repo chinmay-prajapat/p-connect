@@ -125,6 +125,9 @@ const userSchema = new Schema({
     type: String,
     default: 'user',
   },
+  notice: {
+    type: String,
+  },
 
   createdAt: {
     type: Date,

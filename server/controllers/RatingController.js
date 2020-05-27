@@ -75,7 +75,11 @@ router.get('/fetchrating/:ratingGiver/:ratingReciever', function (req, res) {
 router.get('/', function (req, res) {
   Rating.find()
     .sort({ createdAt: -1 })
-    .populate('user')
+    // .populate('mentorId')
+    .populate({
+      path: 'mentorId',
+      populate: { path: 'rating', model: 'Rating' },
+    })
     .then(function (ratings) {
       res.send(ratings);
       console.log(ratings.user);
@@ -84,6 +88,9 @@ router.get('/', function (req, res) {
     .catch(function (err) {
       res.send(err);
     });
+});
+router.get('/myrating', function (req, res) {
+  Rating.find({}).then((ratings) => res.send(ratings));
 });
 router.get('/rating1/:id', function (req, res) {
   console.log(req.params.id);

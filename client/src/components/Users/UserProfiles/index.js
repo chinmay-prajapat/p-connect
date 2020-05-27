@@ -55,6 +55,7 @@ class Profile extends Component {
           >
             Mentor Profile
           </h2> */}
+
           <div className="col-4">
             <div
               className="card"
@@ -201,11 +202,24 @@ class Profile extends Component {
               )}
             </div>
           </div>
+
           <div className="col">
             <div className="container">
               <div style={{}}>
                 <table className="table">
                   <tbody>
+                    <tr>
+                      <th
+                        scope="row"
+                        style={{ color: 'red', fontWeight: 'bold' }}
+                      >
+                        NOTICE:
+                      </th>
+
+                      <td style={{ fontWeight: 'bold', color: '#7d5e2a' }}>
+                        {this.props.location.state.record.notice}
+                      </td>
+                    </tr>
                     <tr>
                       <th scope="row">Profession</th>
 
