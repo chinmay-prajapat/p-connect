@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import decode from 'jwt-decode';
-import Header from '../Header/Header';
+import Header from './Header';
 
 const myStyle = { backgroundColor: '#10375c', padding: '0px' };
 const myCol = {
@@ -10,7 +10,7 @@ const myCol = {
   padding: '10px 10px',
   float: 'left',
 };
-class UserHeader extends Component {
+class UserHeaderPay extends Component {
   constructor(props) {
     super(props);
     const token = localStorage.getItem('token');
@@ -58,23 +58,23 @@ class UserHeader extends Component {
             }}
           >
             <div style={myCol} className="col ">
-              <Link style={{ fontSize: '20px', color: 'white' }} to="/home">
+              <Link style={{ fontSize: '20px', color: 'white' }} to="/pay">
                 Home
               </Link>
             </div>
             <div style={myCol} className="col">
-              <Link style={{ fontSize: '20px', color: 'white' }} to="/mentor">
+              <Link style={{ fontSize: '20px', color: 'white' }} to="/pay">
                 Mentor
               </Link>
             </div>
 
             <div style={myCol} className="col">
-              <Link style={{ fontSize: '20px', color: 'white' }} to="/message">
+              <Link style={{ fontSize: '20px', color: 'white' }} to="/pay">
                 Message
               </Link>
             </div>
             <div style={myCol} className="col">
-              <Link style={{ fontSize: '20px', color: 'white' }} to="/feed">
+              <Link style={{ fontSize: '20px', color: 'white' }} to="/pay">
                 Feed
               </Link>
             </div>
@@ -87,11 +87,6 @@ class UserHeader extends Component {
               </Link>
             </div>
 
-            <div style={myCol} className="col">
-              <Link style={{ fontSize: '20px', color: 'white' }} to="/invite">
-                Invite
-              </Link>
-            </div>
             <div style={myCol} className="col">
               <Link style={{ fontSize: '20px', color: 'white' }} to="/about">
                 About
@@ -109,4 +104,4 @@ class UserHeader extends Component {
     );
   }
 }
-export default UserHeader;
+export default UserHeaderPay;

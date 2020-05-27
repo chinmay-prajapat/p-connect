@@ -127,7 +127,7 @@ class Subscriber extends Component {
 
                     <td>{record.phone}</td>
                     <td>{record.email}</td>
-
+                    <td>{record.amount}</td>
                     <button>
                       <Link
                         to={{

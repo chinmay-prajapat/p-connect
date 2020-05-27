@@ -72,12 +72,18 @@ router.get('/fetchrating/:ratingGiver/:ratingReciever', function (req, res) {
       res.send(err);
     });
 });
-router.get('/rating/:id', function (req, res) {
-  console.log(req.params.id);
-  User.findById(req.params.id).then((rating) => {
-    console.log(rating);
-    res.send(rating);
-  });
+router.get('/', function (req, res) {
+  Rating.find()
+    .sort({ createdAt: -1 })
+    .populate('user')
+    .then(function (ratings) {
+      res.send(ratings);
+      console.log(ratings.user);
+      res.send(ratings.user);
+    })
+    .catch(function (err) {
+      res.send(err);
+    });
 });
 router.get('/rating1/:id', function (req, res) {
   console.log(req.params.id);

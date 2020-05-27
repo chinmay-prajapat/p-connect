@@ -73,8 +73,10 @@ class UserRegister extends React.Component {
     if (firstName.length < 3) {
       firstNameValid = false;
       errorMsg.firstName = 'Must be at least 3 characters long';
+    } else if (!/^[a-zA-Z]+$/.test(firstName)) {
+      firstNameValid = false;
+      errorMsg.firstName = 'Must be alphabets';
     }
-
     this.setState({ firstNameValid, errorMsg }, this.validateForm);
   };
   updateLastName = (lastName) => {
@@ -86,11 +88,13 @@ class UserRegister extends React.Component {
     let lastNameValid = true;
     let errorMsg = { ...this.state.errorMsg };
 
-    if (lastName.length < 3) {
+    if (!/^[a-zA-Z]+$/.test(lastName)) {
+      lastNameValid = false;
+      errorMsg.lastName = 'Must be alphabets';
+    } else if (lastName.length < 3) {
       lastNameValid = false;
       errorMsg.lastName = 'Must be at least 3 characters long';
     }
-
     this.setState({ lastNameValid, errorMsg }, this.validateForm);
   };
   updatePhone = (phone) => {
@@ -192,7 +196,7 @@ class UserRegister extends React.Component {
     axios
       .post('http://localhost:5000/api/users/register', formData)
       .then((response) => {
-        // this.props.history.push('/ulogin');
+        this.props.history.push('/ulogin');
         const myEmail = {
           email: this.state.email,
           firstName: this.state.firstName,

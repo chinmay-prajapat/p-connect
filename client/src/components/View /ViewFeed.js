@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 // import generateData from '../generateData';
 import { Link } from 'react-router-dom';
+import Spinner from 'react-bootstrap/Spinner';
 import { Document, Page } from 'react-pdf';
 class ViewFeed extends Component {
   constructor(props) {
@@ -9,6 +10,12 @@ class ViewFeed extends Component {
     this.state = {
       data: [],
       delete: 0,
+      contributer: '',
+      first: [],
+      second: [],
+      third: [],
+      fourth: [],
+      rating: [],
     };
   }
   //   deleteItem = (itemId) => {
@@ -30,17 +37,43 @@ class ViewFeed extends Component {
     axios
       .get('http://localhost:5000/api/contribute/')
       .then((response) => {
-        console.log(response.data);
+        console.log('Contri', response.data);
         this.setState({
           data: response.data,
+          first: response.data.map((a) => a.contributer),
+        });
+        this.setState({
+          second: this.state.first.map((b) => b.rating),
+        });
+        this.setState({
+          third: this.state.second.map((c) => c.map((d) => d.rating)),
+        });
+        this.setState({
+          rating: this.state.third.map((e) => this.averageRating(e)),
         });
       })
+
       .catch((err) => {
         console.log(err);
       });
   }
 
+  averageRating = (arr) => {
+    console.log('Array', arr);
+    let i = 0;
+    let sum = 0;
+    let len = arr.length;
+    while (i < len) {
+      sum = sum + arr[i++];
+    }
+    return sum / len;
+  };
+
   render() {
+    console.log('first', this.state.first);
+    console.log('Second', this.state.second);
+    console.log('Third', this.state.third);
+    console.log('Rating render', this.state.rating);
     let { data } = this.state;
 
     return (
@@ -62,7 +95,7 @@ class ViewFeed extends Component {
           </div>
         </div>
         <hr></hr>
-        {data.map((data) => (
+        {data.map((data, i) => (
           <div
             className="row"
             style={{
@@ -81,19 +114,20 @@ class ViewFeed extends Component {
                   },
                 }}
               >
-                {data.contributer.firstName}
+                {data.contributer.firstName} {data.contributer.lastName}
               </Link>
+              <p>{this.state.rating[i]}</p>
             </div>
             <div className="col-2">{data.title}</div>
-            <div className="col-4">{data.description}</div>
+            <div className="col-3">{data.description}</div>
 
-            <div className="col-2" style={{ right: '20px' }}>
+            <div className="col-3" style={{ right: '20px' }}>
               <a href={data.link} target="blank">
                 {data.link}
               </a>
             </div>
 
-            <div className="col">
+            <div className="col-2">
               <Document file={data.location} />
               <a href={data.location} target="blank">
                 {data.location}

@@ -83,7 +83,7 @@ class ProfessionalRegister extends Component {
     const { experience } = this.state;
     let experienceValid = true;
     let errorMsg = { ...this.state.errorMsg };
-    if (!/^[0-9]{1}/.test(experience)) {
+    if (!/^[0-9]+$/.test(experience)) {
       experienceValid = false;
       errorMsg.experience = 'Only numerical allowed';
     }
@@ -98,7 +98,7 @@ class ProfessionalRegister extends Component {
     let sessionValid = true;
     let errorMsg = { ...this.state.errorMsg };
 
-    if (!/^[0-9]{4}/.test(session)) {
+    if (!/^[0-9]+$/.test(session)) {
       sessionValid = false;
       errorMsg.session = 'Only numerical allowed';
     }
@@ -117,8 +117,10 @@ class ProfessionalRegister extends Component {
     if (firstName.length < 3) {
       firstNameValid = false;
       errorMsg.firstName = 'Must be at least 3 characters long';
+    } else if (!/^[a-zA-Z]+$/.test(firstName)) {
+      firstNameValid = false;
+      errorMsg.firstName = 'Must be alphabets';
     }
-
     this.setState({ firstNameValid, errorMsg }, this.validateForm);
   };
   updateLastName = (lastName) => {
@@ -130,7 +132,10 @@ class ProfessionalRegister extends Component {
     let lastNameValid = true;
     let errorMsg = { ...this.state.errorMsg };
 
-    if (lastName.length < 3) {
+    if (!/^[a-zA-Z]+$/.test(lastName)) {
+      lastNameValid = false;
+      errorMsg.lastName = 'Must be alphabets';
+    } else if (lastName.length < 3) {
       lastNameValid = false;
       errorMsg.lastName = 'Must be at least 3 characters long';
     }
@@ -144,7 +149,7 @@ class ProfessionalRegister extends Component {
     const { phone } = this.state;
     let phoneValid = true;
     let errorMsg = { ...this.state.errorMsg };
-    if (!/^[6-9][0-9]{9}/.test(phone)) {
+    if (!/^[6-9][0-9]+$/.test(phone)) {
       phoneValid = false;
       errorMsg.phone = 'Invalid phone number';
     } else if (phone.length < 10) {
@@ -525,6 +530,7 @@ class ProfessionalRegister extends Component {
                         }}
                         placeholder="Phone Number"
                         type="text"
+                        maxLength="10"
                         value={this.state.phone}
                         onChange={(e) => this.updatePhone(e.target.value)}
                         name="phone"

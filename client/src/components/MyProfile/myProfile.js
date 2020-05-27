@@ -66,21 +66,36 @@ export default class UserProfile extends Component {
     return (
       <div>
         <div className="row">
-          <div className="col">
-            <input type="text" name="firstName" value={data.firstName} />
+          <div
+            className="col"
+            style={{
+              textAlign: 'center',
+              fontWeight: 'bold',
+              fontSize: '40px',
+              marginTop: '350px',
+              padding: '10px',
+            }}
+          >
+            {/* <input
+              type="text"
+              name="firstName"
+              value={(data.firstName, data.lastName)}
+            /> */}
+            {data.firstName} {data.lastName}
           </div>
         </div>
-        <button>
+        <div style={{ textAlign: 'center' }}>
           <Link
+            className="btn btn-primary btn-lg active"
             to={{
               pathname: `/updateProfile/${data._id}`,
               state: { data },
             }}
-            style={{ color: '#0000ff', fontSize: '15px' }}
+            style={{ color: 'white', fontSize: '30px' }}
           >
-            Edit
+            Edit Profile
           </Link>
-        </button>
+        </div>
       </div>
     );
   }

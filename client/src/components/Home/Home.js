@@ -7,7 +7,7 @@ class Home extends Component {
   //   axios.get('http://localhost:5000/');
   // }
   render() {
-    return <div className="container">page</div>;
+    return <div className="container">my page</div>;
   }
 }
 export default Home;

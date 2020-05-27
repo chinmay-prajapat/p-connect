@@ -70,11 +70,15 @@ router.post('/get', function (req, res) {
 router.get('/', function (req, res) {
   Contribute.find()
     .sort({ createdAt: -1 })
-    .populate('contributer')
+    .populate({
+      path: 'contributer',
+      populate: { path: 'rating', model: 'Rating' },
+    })
     .then(function (contributes) {
       res.send(contributes);
-      console.log(contributes.contributer);
-      res.send(contributes.contributer);
+
+      // res.send(contributes.contributer);
+      // console.log('My', contributes.contributer);
     })
     .catch(function (err) {
       res.send(err);

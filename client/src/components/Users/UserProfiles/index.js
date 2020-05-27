@@ -2,7 +2,9 @@ import React, { Component, useState } from 'react';
 import { FaStar } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+
 import decode from 'jwt-decode';
+import Comment from '../../Comment/Comment';
 // import StarRating from 'react-star-rating';
 import StarRating from '../UserProfiles/Rating';
 
@@ -26,6 +28,17 @@ class Profile extends Component {
       .then((res) => {
         console.log(res.data.rating);
         this.setState({ rating: res.data.rating });
+      });
+    axios
+      .get(
+        `http://localhost:5000/api/users/display/comment/${this.props.location.state.record._id}`
+      )
+      .then((res) => {
+        console.log(res.data);
+        this.setState({
+          data: res.data,
+        });
+        console.log('Commenter', this.state.data.firstName);
       })
       .catch((err) => {
         console.log(err);
@@ -35,138 +48,263 @@ class Profile extends Component {
   render() {
     let { data, isShowingAlert } = this.state;
     return (
-      <div
-        className="card"
-        style={{
-          width: '18rem',
-          padding: '20px',
-          margin: '20px 0px',
-          left: '200px',
-        }}
-      >
-        {this.state.rating ? (
-          <div className="card-body">
-            <h6 className="card-title">
-              {this.props.location.state.record.firstName.toUpperCase()}
+      <div className="container">
+        <div className="row">
+          {/* <h2
+            style={{ textAlign: 'center', padding: '30px', fontWeight: 'bold' }}
+          >
+            Mentor Profile
+          </h2> */}
+          <div className="col-4">
+            <div
+              className="card"
+              style={{
+                width: '18rem',
+                padding: '20px',
+                margin: '10px 0px',
 
-              {this.props.location.state.record.lastName.toUpperCase()}
-            </h6>
-            <div>
-              <StarRating
-                rating={this.state.rating}
-                mentorId={this.props.location.state.record._id}
-              />
-            </div>
-            <div>{this.state.rating}/5</div>
-
-            <h6 className="card-title">
-              {this.props.location.state.record.stream}
-            </h6>
-            <h6 className="card-title">
-              {this.props.location.state.record.experience}
-              <p className="card-text">Years of experience</p>
-            </h6>
-            <div className="card-title">
-              {this.props.location.state.record.city.toUpperCase()}
-            </div>
-            <Link
-              className="btn btn-success"
-              to={{
-                pathname: `/mentor/${this.props.location.state.record._id}/inviteform`,
-                state: {
-                  mentorId: this.props.location.state.record._id,
-                },
+                // boxShadow: '20px ',
               }}
             >
-              Invite
-            </Link>
-            {localStorage.getItem('token') ? (
-              <Link
-                style={{ margin: '2px' }}
-                className="btn btn-info"
-                to={{
-                  pathname: `/ask/${this.props.location.state.record._id}/messagebox`,
-                  state: {
-                    mentorId: this.props.location.state.record._id,
-                    firstName: this.props.location.state.record.firstName,
-                    lastName: this.props.location.state.record.lastName,
-                  },
-                }}
-              >
-                Send Message
-              </Link>
-            ) : (
-              <Link
-                style={{ margin: '0px 2px' }}
-                className="btn btn-primary"
-                to={{
-                  pathname: `/login`,
-                }}
-              >
-                Login
-              </Link>
-            )}
+              {this.state.rating ? (
+                <div className="card-body">
+                  <h6
+                    className="card-title"
+                    style={{ fontWeight: 'bold', padding: '10px 0px' }}
+                  >
+                    {this.props.location.state.record.firstName.toUpperCase()}
+                    &nbsp;&nbsp;
+                    {this.props.location.state.record.lastName.toUpperCase()}
+                  </h6>
+                  <h3></h3>
+                  <div>
+                    <StarRating
+                      rating={this.state.rating}
+                      mentorId={this.props.location.state.record._id}
+                    />
+                  </div>
+                  <div>
+                    You rated:
+                    {this.state.rating}/5
+                  </div>
+
+                  <h6 className="card-title">
+                    {this.props.location.state.record.stream}
+                  </h6>
+                  <h6 className="card-title">
+                    {this.props.location.state.record.experience}: Years of
+                    experience
+                  </h6>
+                  <div className="card-title">
+                    {this.props.location.state.record.city.toUpperCase()}
+                  </div>
+
+                  <Link
+                    className="btn btn-success"
+                    to={{
+                      pathname: `/mentor/${this.props.location.state.record._id}/inviteform`,
+                      state: {
+                        mentorId: this.props.location.state.record._id,
+                      },
+                    }}
+                  >
+                    Invite
+                  </Link>
+                  {localStorage.getItem('token') ? (
+                    <Link
+                      style={{ margin: '2px' }}
+                      className="btn btn-info"
+                      to={{
+                        pathname: `/ask/${this.props.location.state.record._id}/messagebox`,
+                        state: {
+                          mentorId: this.props.location.state.record._id,
+                          firstName: this.props.location.state.record.firstName,
+                          lastName: this.props.location.state.record.lastName,
+                        },
+                      }}
+                    >
+                      Send Message
+                    </Link>
+                  ) : (
+                    <Link
+                      style={{ margin: '0px 2px' }}
+                      className="btn btn-primary"
+                      to={{
+                        pathname: `/login`,
+                      }}
+                    >
+                      Login
+                    </Link>
+                  )}
+                </div>
+              ) : (
+                <div>
+                  <h6 className="card-title">
+                    {this.props.location.state.record.firstName.toUpperCase()}
+
+                    {this.props.location.state.record.lastName.toUpperCase()}
+                  </h6>
+                  <div>
+                    <StarRating
+                      mentorId={this.props.location.state.record._id}
+                    />
+                  </div>
+
+                  <h6 className="card-title">
+                    {this.props.location.state.record.stream}
+                  </h6>
+                  <h6 className="card-title">
+                    {this.props.location.state.record.experience}
+                    <p className="card-text">Years of experience</p>
+                  </h6>
+                  <div className="card-title">
+                    {this.props.location.state.record.city.toUpperCase()}
+                  </div>
+                  <Link
+                    className="btn btn-success"
+                    to={{
+                      pathname: `/mentor/${this.props.location.state.record._id}/inviteform`,
+                      state: {
+                        mentorId: this.props.location.state.record._id,
+                      },
+                    }}
+                  >
+                    Invite
+                  </Link>
+                  {localStorage.getItem('token') ? (
+                    <Link
+                      style={{ margin: '2px' }}
+                      className="btn btn-info"
+                      to={{
+                        pathname: `/ask/${this.props.location.state.record._id}/messagebox`,
+                        state: {
+                          mentorId: this.props.location.state.record._id,
+                          firstName: this.props.location.state.record.firstName,
+                          lastName: this.props.location.state.record.lastName,
+                        },
+                      }}
+                    >
+                      Send Message
+                    </Link>
+                  ) : (
+                    <Link
+                      style={{ margin: '0px 2px' }}
+                      className="btn btn-primary"
+                      to={{
+                        pathname: `/login`,
+                      }}
+                    >
+                      Login
+                    </Link>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
-        ) : (
-          <div className="card-body">
-            <h6 className="card-title">
-              {this.props.location.state.record.firstName.toUpperCase()}
+          <div className="col">
+            <div className="container">
+              <div style={{}}>
+                <table className="table">
+                  <tbody>
+                    <tr>
+                      <th scope="row">Profession</th>
 
-              {this.props.location.state.record.lastName.toUpperCase()}
-            </h6>
+                      <td>{this.props.location.state.record.profession}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Teacher at:</th>
+
+                      <td>{this.props.location.state.record.teaching}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Working at:</th>
+
+                      <td>{this.props.location.state.record.working}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">UG degree:</th>
+
+                      <td>{this.props.location.state.record.underGraduate}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Studied at:</th>
+
+                      <td>
+                        {this.props.location.state.record.underGraduateCollege}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">PG degree:</th>
+
+                      <td>{this.props.location.state.record.postGraduate}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Studied at:</th>
+
+                      <td>
+                        {this.props.location.state.record.postGraduateCollege}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Specialization In:</th>
+
+                      <td>{this.props.location.state.record.specialization}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">More about me:</th>
+
+                      <td>{this.props.location.state.record.bio}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <Comment mentorId={this.props.location.state.record._id}></Comment>
+          </div>
+
+          <div className="container" style={{ marginTop: 100 }}>
             <div>
-              <StarRating mentorId={this.props.location.state.record._id} />
+              <h4
+                style={{
+                  textAlign: 'center',
+                  padding: '10px',
+                  fontWeight: 'bold',
+                  backgroundColor: '#007bff',
+                  color: 'white',
+                  marginBottom: 0,
+                }}
+              >
+                Feedback
+              </h4>
             </div>
-
-            <h6 className="card-title">
-              {this.props.location.state.record.stream}
-            </h6>
-            <h6 className="card-title">
-              {this.props.location.state.record.experience}
-              <p className="card-text">Years of experience</p>
-            </h6>
-            <div className="card-title">
-              {this.props.location.state.record.city.toUpperCase()}
-            </div>
-            <Link
-              className="btn btn-success"
-              to={{
-                pathname: `/mentor/${this.props.location.state.record._id}/inviteform`,
-                state: {
-                  mentorId: this.props.location.state.record._id,
-                },
+            <div
+              className="row"
+              style={{
+                height: '400px',
+                overflow: 'auto',
               }}
             >
-              Invite
-            </Link>
-            {localStorage.getItem('token') ? (
-              <Link
-                style={{ margin: '2px' }}
-                className="btn btn-info"
-                to={{
-                  pathname: `/ask/${this.props.location.state.record._id}/messagebox`,
-                  state: {
-                    mentorId: this.props.location.state.record._id,
-                    firstName: this.props.location.state.record.firstName,
-                    lastName: this.props.location.state.record.lastName,
-                  },
-                }}
-              >
-                Send Message
-              </Link>
-            ) : (
-              <Link
-                style={{ margin: '0px 2px' }}
-                className="btn btn-primary"
-                to={{
-                  pathname: `/login`,
-                }}
-              >
-                Login
-              </Link>
-            )}
+              <div className="col">
+                <table className="table" style={{ padding: '40px' }}>
+                  <tbody>
+                    {data.map((data) => (
+                      <tr>
+                        <td style={{ fontWeight: 'bold' }}>
+                          {data.firstName.toLowerCase()}
+                        </td>
+                        <td style={{ fontWeight: 'bold' }}>
+                          {' '}
+                          {data.lastName.toLowerCase()}
+                        </td>
+                        <td>{data.comment}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
-        )}
+        </div>
       </div>
     );
   }

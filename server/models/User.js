@@ -18,6 +18,7 @@ const userSchema = new Schema({
     minlength: 3,
   },
   bio: {
+    trim: true,
     type: String,
   },
   profession: {
@@ -26,6 +27,30 @@ const userSchema = new Schema({
   otherStream: {
     type: String,
     minlength: 3,
+  },
+  underGraduate: {
+    type: String,
+  },
+  underGraduateCollege: {
+    type: String,
+  },
+  postGraduate: {
+    type: String,
+  },
+  postGraduateCollege: {
+    type: String,
+  },
+  workPlace: {
+    type: String,
+  },
+  interest: {
+    type: String,
+  },
+  teaching: {
+    type: String,
+  },
+  working: {
+    type: String,
   },
   lastName: {
     type: String,
@@ -48,6 +73,9 @@ const userSchema = new Schema({
     type: String,
   },
   session: {
+    type: String,
+  },
+  specialization: {
     type: String,
   },
   password: {
@@ -86,7 +114,13 @@ const userSchema = new Schema({
       },
     },
   },
+  payment_email: { type: String },
 
+  amount: { type: Number, default: 0 },
+  subscriptionDeadLine: {
+    type: Date,
+    default: new Date(+new Date() + 10 * 60 * 1000),
+  },
   roles: {
     type: String,
     default: 'user',
@@ -129,6 +163,7 @@ const userSchema = new Schema({
   event: [{ type: Schema.Types.ObjectId, ref: 'Event' }],
   message: [{ type: Schema.Types.ObjectId, ref: 'Message' }],
   contributeId: [{ type: Schema.Types.ObjectId, ref: 'Contribute' }],
+  comment: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
 });
 
 // pre hooks - Model Middlewares -
@@ -171,6 +206,7 @@ userSchema.methods.generateToken = function () {
   const tokenData = {
     _id: user._id,
     roles: user.roles,
+    amountPaid: user.amount,
 
     createdAt: Number(new Date()),
   };

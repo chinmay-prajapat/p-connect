@@ -30,9 +30,8 @@ const eventSchema = new Schema({
   rejectButton: {
     type: Boolean,
   },
-  date: {
-    type: Date,
-    required: true,
+  status: {
+    type: String,
   },
   hour: {
     type: Number,

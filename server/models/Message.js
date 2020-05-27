@@ -17,7 +17,7 @@ const messageSchema = new Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now,
+    default: new Date(),
   },
   sender: { type: Schema.Types.ObjectId, ref: 'User' },
   messageSender: { type: Schema.Types.ObjectId, ref: 'User' },

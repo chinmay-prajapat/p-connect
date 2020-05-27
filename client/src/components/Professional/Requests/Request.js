@@ -141,8 +141,14 @@ class myRequest extends Component {
 
     let { data, isShowingAlert } = this.state;
     return (
-      <div className="container">
-        <h1 style={{ textAlign: 'center', padding: '50px 0px' }}>
+      <div className="container-fluid">
+        <h1
+          style={{
+            textAlign: 'center',
+            padding: '50px 0px',
+            fontWeight: 'bold',
+          }}
+        >
           Invite View
         </h1>
         <table className="table table-striped table-dark">
@@ -173,9 +179,18 @@ class myRequest extends Component {
                 <td>{data.hour}</td>
                 <td>{data.phone}</td>
                 <td>{data.email}</td>
-                <td>{data.message}</td>
+                <td
+                  style={{
+                    color: data.message === 'Accepted' ? 'green' : 'red',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  {data.message}
+                </td>
+
                 <td>
                   <button
+                    className="btn btn-success"
                     disabled={data.acceptButton}
                     onClick={() =>
                       this.acceptEmail(
@@ -190,7 +205,10 @@ class myRequest extends Component {
                   >
                     Accept
                   </button>
+                </td>
+                <td>
                   <button
+                    className="btn btn-danger"
                     disabled={data.rejectButton}
                     onClick={() =>
                       this.rejectEmail(

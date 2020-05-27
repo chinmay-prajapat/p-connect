@@ -4,13 +4,17 @@ const _ = require('lodash');
 const AWS = require('aws-sdk');
 require('dotenv').config();
 const multer = require('multer');
+const uploadLocation = require('../../client/src/uploads/uploadsLocation');
 const multerS3 = require('multer-s3');
 const { authenticateAccess } = require('../middlewares/authentication');
 const decode = require('jwt-decode');
 // const decode = require('jwt-decode');
 const router = express.Router();
 const { User } = require('../models/User');
-const { authenticateUser } = require('../middlewares/authentication');
+const {
+  authenticateUser,
+  authenticateSubscription,
+} = require('../middlewares/authentication');
 
 AWS.config.update({
   accessKeyId: 'AKIAI5ZM5TTMEUXIHZDA',
@@ -52,6 +56,9 @@ router.post('/upload', upload.single('certificate'), function (req, res) {
     experience: req.body.experience,
     roles: req.body.roles,
     location: req.file.location,
+    img: req.file.img,
+    teaching: req.body.teaching,
+    working: req.body.working,
     allowAccess: req.body.allowAccess,
     certificate: req.file.originalname,
   };
@@ -67,7 +74,37 @@ router.post('/upload', upload.single('certificate'), function (req, res) {
       res.send(err);
     });
 });
+let storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadLocation);
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname);
+  },
+});
+var uploadImg = multer({ storage: storage });
+router.post('/img/:id', uploadImg.fields([{ name: 'img' }]), function (
+  req,
+  res
+) {
+  const body = req.body;
+  const files = req.files;
+  User.findByIdAndUpdate(
+    req.params.id,
 
+    { img: files.img[0].filename }
+  )
+    // console.log(body);
+    // const user = new User(body);
+    // user
+    //   .save()
+    .then(function (user) {
+      res.send(user);
+    })
+    .catch(function (err) {
+      res.send(err);
+    });
+});
 router.post('/register', function (req, res) {
   let body = req.body;
   const user = new User(body);
@@ -91,6 +128,15 @@ router.get('/display/invites/:userId', function (req, res) {
       res.send(user.event);
     });
 });
+router.get('/display/comment/:userId', function (req, res) {
+  // console.log(req.params.userId);
+  User.findById(req.params.userId)
+    .populate('comment')
+    .then((user) => {
+      // console.log(user.event);
+      res.send(user.comment);
+    });
+});
 router.get('/display1/message/:userId', function (req, res) {
   console.log(req.params.userId);
   User.findById(req.params.userId)
@@ -110,7 +156,11 @@ router.get('/display1/rating/:userId', function (req, res) {
     });
 });
 
-router.post('/login', authenticateAccess, function (req, res) {
+router.post('/login', authenticateAccess, authenticateSubscription, function (
+  req,
+  res
+) {
+  console.log('hola');
   const body = req.body;
   User.findByCredentials(body.email, body.password)
     .then(function (user) {
@@ -143,7 +193,17 @@ router.post('/update1/:id', function (req, res) {
   const body = req.body;
   User.findByIdAndUpdate(
     req.params.id,
-    { firstName: req.body.firstName, lastName: req.body.lastName },
+    {
+      working: req.body.working,
+      teaching: req.body.teaching,
+      phone: req.body.phone,
+      specialization: req.body.specialization,
+      underGraduate: req.body.underGraduate,
+      postGraduate: req.body.postGraduate,
+      underGraduateCollege: req.body.underGraduateCollege,
+      postGraduateCollege: req.body.postGraduateCollege,
+      bio: req.body.bio,
+    },
     { new: true }
   )
     .then(function (user) {
@@ -218,6 +278,20 @@ router.put('/my/:id', function (req, res) {
   User.findByIdAndUpdate(
     req.params.id,
     { $push: { message: req.body.messageId } },
+    { new: true }
+  )
+    .then(function (user) {
+      res.send(user);
+    })
+    .catch(function (err) {
+      res.send(err);
+    });
+});
+router.put('/mycomment/:id', function (req, res) {
+  const body = req.body;
+  User.findByIdAndUpdate(
+    req.params.id,
+    { $push: { comment: req.body.commentId } },
     { new: true }
   )
     .then(function (user) {

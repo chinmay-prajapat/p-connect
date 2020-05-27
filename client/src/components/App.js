@@ -12,9 +12,11 @@ import UserLogin from './LogIn/UserLogin';
 import ProfessionalLogin from './LogIn/ProfessionalLogin';
 import ProfessionalRegister from './Register/ProfessionalRegister';
 import Header from './Header/index';
+import Comment from './Comment/Comment';
 import AdminMessage from './Admin/AdminMessage/index';
 import AdminHeader from './Admin/AdminHeader/index';
 import About from './About/About';
+import Img from './MyProfile/ProfilePic';
 import Edit from './Admin/Access/Edit';
 import Contribute from './Professional/Contribute';
 import Login from './LogIn';
@@ -29,7 +31,7 @@ import UserMentor from './Users/Mentor/index';
 import updateProfile from './MyProfile/updateProfile';
 import Follow from './Users/Follow/index';
 import Reply from './Messages/Reply';
-
+import checkSubscription from './LogIn/checkSubscription';
 import ProfileRequest from './Admin/ProfileRequest/ProfileRequest';
 // import ProfessionalProfile from './Professional/ProfessionalProfiles/index';
 import Transcation from './Admin/Transcation/index';
@@ -90,6 +92,8 @@ class App extends Component {
               component={viewProfile}
             />
             <Route exact={true} path="/pay" component={Pay} />
+            <Route exact={true} path="/img" component={Img} />
+            <Route exact={true} path="/comment" component={Comment} />
             <Route exact={true} path="/term" component={Terms} />
             <Route exact={true} path="/reply/:id" component={Reply} />
             <Route exact={true} path="/myProfile" component={myProfile} />
@@ -103,6 +107,11 @@ class App extends Component {
             <Route exact={true} path="/transcation" component={Transcation} />
             <Route exact={true} path="/rating/:id" component={StarRating} />
             <Route
+              exact={true}
+              path="/checksubscription"
+              component={checkSubscription}
+            />
+            <Route
               path="/logout"
               render={(props) => {
                 axios
@@ -113,7 +122,8 @@ class App extends Component {
                   })
                   .then((response) => {
                     localStorage.removeItem('token');
-                    localStorage.removeItem('roles');
+                    localStorage.removeItem('role');
+                    localStorage.removeItem('amountPaid');
                     window.location.href = `http://localhost:3000`;
                   });
               }}

@@ -10,6 +10,7 @@ class Message extends Component {
       description: '',
       firstName: '',
       lastName: '',
+      sent: 0,
     };
 
     console.log(this.props);
@@ -42,6 +43,9 @@ class Message extends Component {
           .catch((err) => {
             console.log(err);
           });
+        this.setState({
+          sent: 1,
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -72,7 +76,7 @@ class Message extends Component {
     }));
   };
   render() {
-    return (
+    return this.state.sent === 0 ? (
       <div
         style={{
           boxShadow: '0px 2px 3px 3px grey',
@@ -120,6 +124,8 @@ class Message extends Component {
           Submit
         </button>
       </div>
+    ) : (
+      <div>Your Message has been sent Succesfully !</div>
     );
   }
 }

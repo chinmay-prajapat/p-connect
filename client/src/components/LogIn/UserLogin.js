@@ -15,6 +15,7 @@ class UserLogin extends React.Component {
       email: '',
       password: '',
       errors: '',
+      amount: '',
       loggedIn,
     };
   }
@@ -37,6 +38,9 @@ class UserLogin extends React.Component {
         const tokenData = decode(response.data.token);
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('role', tokenData.roles);
+        console.log(response.data);
+        if (tokenData.amountPaid != undefined)
+          localStorage.setItem('amountPaid', tokenData.amountPaid);
         // redirect to contacts page
         this.props.history.push('/userheader');
         // change the navigation links = update the state of isAuthenticated in the parent component
@@ -64,9 +68,19 @@ class UserLogin extends React.Component {
       justifyContent: 'center',
       borderRadius: '10px',
     };
-    if (this.state.loggedIn) {
-      return <Redirect to="/userheader" />;
-    }
+
+    // {
+    //   this.state.loggedIn &&
+    //   this.state.roles === 'user' &&
+    //   this.state.amount === null ? (
+    //     <Redirect to="/pay" />
+    //   ) : (
+    //     <Redirect to="/home" />
+    //   );
+    // }
+    // {
+    //   return <Redirect to="/userheader" />;
+    // }
     return (
       <div className="container">
         <h1 style={{ textAlign: 'center', margin: '35px 0px' }}>User Login</h1>
@@ -144,4 +158,5 @@ class UserLogin extends React.Component {
     );
   }
 }
+
 export default UserLogin;

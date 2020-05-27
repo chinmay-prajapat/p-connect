@@ -29,6 +29,29 @@ const authenticateAccess = function (req, res, next) {
     });
 };
 
+const authenticateSubscription = function (req, res, next) {
+  const email = req.body.email;
+  User.findOne({ email })
+    .then(function (user) {
+      if (user.roles === 'user') {
+        if (Date.parse(user.subscriptionDeadLine) > Date.now()) {
+          console.log('Haa');
+          next();
+        } else {
+          console.log('Naa');
+          user.amount = 0;
+          user.save();
+          next();
+        }
+      } else {
+        next();
+      }
+    })
+    .catch(function (err) {
+      res.status('403').send(err);
+    });
+};
+
 const authenticateUser = function (req, res, next) {
   const token = req.header('x-auth');
   User.findByToken(token)
@@ -51,4 +74,5 @@ module.exports = {
   authenticateUser,
   authenticateLoginUser,
   authenticateAccess,
+  authenticateSubscription,
 };

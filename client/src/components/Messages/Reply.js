@@ -8,9 +8,8 @@ class Message extends Component {
     this.state = {
       question: '',
       description: '',
+      record: '',
     };
-
-    console.log(this.props);
   }
 
   onFormSubmit = (e) => {
@@ -24,6 +23,7 @@ class Message extends Component {
 
       sender: decode(localStorage.getItem('token'))._id,
     };
+    console.log('this is reply', this.props.location.state.data.sender);
     axios
       .post(`http://localhost:5000/api/message/register`, formData)
       .then((res) => {
@@ -34,6 +34,8 @@ class Message extends Component {
           )
           .then((res) => {
             console.log(res.data);
+            this.setState({ data: res.data });
+            console.log('data', this.state.data.firstName);
           })
           .catch((err) => {
             console.log(err);
@@ -46,7 +48,9 @@ class Message extends Component {
   componentDidMount() {
     const id = decode(localStorage.getItem('token'))._id;
     axios
-      .get(`http://localhost:5000/api/users/account/${id}`)
+      .get(
+        `http://localhost:5000/api/users/account/${this.props.location.state.data.sender}`
+      )
       .then((response) => {
         console.log(response.data);
         this.setState({
@@ -67,7 +71,9 @@ class Message extends Component {
       [e.target.name]: e.target.value,
     }));
   };
+
   render() {
+    console.log('First', this.state.record);
     return (
       <div
         style={{
@@ -79,9 +85,9 @@ class Message extends Component {
         }}
         className="container"
       >
-        <p> {this.props.location.state.firstName}</p>
+        <p>{this.state.record.firstName}</p>
+        <p>{this.state.record.lastName}</p>
 
-        <p>{this.props.location.state.lastName}</p>
         <div className="form-group">
           <input
             type="text"

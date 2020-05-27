@@ -36,8 +36,8 @@ class Header extends Component {
             </Link>
           </div>
           <div style={myCol} className="col">
-            <Link style={{ fontSize: '20px', color: 'white' }} to="/mentor">
-              Invite
+            <Link style={{ fontSize: '20px', color: 'white' }} to="/pay">
+              Subscribe
             </Link>
           </div>
           <div style={myCol} className="col">
