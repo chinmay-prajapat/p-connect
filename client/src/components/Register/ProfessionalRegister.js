@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import myImage from '../Image/professional.gif';
 function ValidationMessage(props) {
   if (!props.valid) {
     return (
-      <div style={{ color: 'red' }} className="error-msg">
+      <div
+        style={{ color: 'red', fontSize: '10px', marginBottom: '20px' }}
+        className="error-msg m-0 p-0"
+      >
         {props.message}
       </div>
     );
@@ -123,6 +127,25 @@ class ProfessionalRegister extends Component {
     }
     this.setState({ firstNameValid, errorMsg }, this.validateForm);
   };
+  updateCity = (city) => {
+    this.setState({ city }, this.validateCity);
+  };
+
+  validateCity = () => {
+    const { city } = this.state;
+    let cityValid = true;
+    let errorMsg = { ...this.state.errorMsg };
+
+    if (city.length < 3) {
+      cityValid = false;
+      errorMsg.city = 'Must be at least 3 characters long';
+    } else if (!/^[a-zA-Z]+$/.test(city)) {
+      cityValid = false;
+      errorMsg.city = 'Must be alphabets';
+    }
+    this.setState({ cityValid, errorMsg }, this.validateForm);
+  };
+
   updateLastName = (lastName) => {
     this.setState({ lastName }, this.validateLastName);
   };
@@ -354,385 +377,290 @@ class ProfessionalRegister extends Component {
         Physics
       </option>,
     ];
-    const container = {
-      marginTop: '100px',
-      marginBottom: '70px',
-      marginRight: '10px',
 
-      marginLeft: '440px',
-      width: '40%',
-      height: '30%',
-      display: 'flex',
-      // flexWrap: 'wrap',
-
-      justifyContent: 'center',
-    };
-    const inbox = {
-      display: 'flex',
-      lineHeight: '40px ',
-      width: '270px',
-      border: '2px solid grey',
-      borderRadius: '5px',
-    };
     return (
-      <div style={container}>
-        <div className="ui equal width grid">
-          <div className="row">
-            <h1>Professional Registration</h1>
-            <div className="column"></div>
-          </div>
-          <form onSubmit={(e) => this.onFormSubmit(e)}>
-            <div
-              className="row"
-              style={{
-                background: '#8db1ab',
-                width: '700px',
-                display: 'flex',
-                textAlign: 'center',
+      <div
+        className="container"
+        style={{
+          display: 'flex',
+          justifyContent: 'right',
+        }}
+      >
+        <div style={{ marginTop: '100px' }}>
+          <img style={{ top: '100px' }} src={myImage} alt="Computer" />
+        </div>
+        <form onSubmit={(e) => this.onFormSubmit(e)}>
+          <div
+            className="shadow p-3 mb-5 bg-white rounded  border border-primary"
+            style={{
+              width: 550,
+              marginTop: '20px',
+            }}
+          >
+            <div className="row">
+              <div className="col-sm-6 my-3">
+                <input
+                  placeholder="First Name"
+                  type="text"
+                  className="form-control"
+                  value={this.state.firstName}
+                  onChange={(e) => this.updateFirstName(e.target.value)}
+                  name="firstName"
+                  required
+                />
+                <ValidationMessage
+                  valid={this.state.firstNameValid}
+                  message={this.state.errorMsg.firstName}
+                />
+              </div>
 
-                // margin: '40px 0px 0px 0px',
-                color: 'white',
-                fontSize: '18px',
-                padding: '60px',
-
-                borderRadius: '10px',
-              }}
-            >
-              <div className="column">
-                <div className="ui segment">
-                  <form className="ui form">
-                    <div className="field">
-                      <ValidationMessage
-                        valid={this.state.firstNameValid}
-                        message={this.state.errorMsg.firstName}
-                      />
-                      <input
-                        style={inbox}
-                        placeholder="First Name"
-                        type="text"
-                        value={this.state.firstName}
-                        onChange={(e) => this.updateFirstName(e.target.value)}
-                        name="firstName"
-                        required
-                      />
-                    </div>
-                    <div className="field">
-                      <ValidationMessage
-                        valid={this.state.lastNameValid}
-                        message={this.state.errorMsg.lastName}
-                      />
-                      <input
-                        style={{
-                          position: 'relative',
-                          left: '270px',
-                          top: '-46px',
-                          width: '270px',
-                          borderRadius: '5px',
-                          lineHeight: '40px',
-                          border: '2px solid grey',
-                        }}
-                        placeholder="Last Name"
-                        type="text"
-                        value={this.state.lastName}
-                        onChange={(e) => this.updateLastName(e.target.value)}
-                        name="lastName"
-                        required
-                      />
-                    </div>
-                    <div className="form-group">
-                      <ValidationMessage
-                        valid={this.state.streamValid}
-                        message={this.state.errorMsg.stream}
-                      />
-                      <select
-                        style={{
-                          display: 'flex',
-                          lineHeight: '40px ',
-                          width: '270px',
-                          padding: '8px',
-                          border: '2px solid grey',
-                          borderRadius: '5px',
-                        }}
-                        name="stream"
-                        value={this.state.stream}
-                        onChange={(e) => this.updateStream(e.target.value)}
-                        required
-                      >
-                        <option value="">Stream</option>
-                        {stream}
-                      </select>
-                    </div>
-                    {/* <div className="field">
-                    <input
-                      style={inbox}
-                      placeholder="Stream"
-                      type="text"
-                      value={this.state.stream}
-                      onChange={this.onInputChange}
-                      name="stream"
-                      required
-                    />
-                  </div> */}
-                    <div className="field">
-                      <input
-                        style={{
-                          position: 'relative',
-                          left: '270px',
-                          top: '-60px',
-                          width: '270px',
-                          borderRadius: '5px',
-                          lineHeight: '40px',
-                          border: '2px solid grey',
-                        }}
-                        placeholder="City"
-                        type="text"
-                        value={this.state.city}
-                        onChange={this.onInputChange}
-                        name="city"
-                        required
-                      />
-                    </div>
-                    <div className="field">
-                      <ValidationMessage
-                        valid={this.state.emailValid}
-                        message={this.state.errorMsg.email}
-                      />
-                      <input
-                        style={{
-                          position: 'relative',
-                          width: '161%',
-                          borderRadius: '5px',
-                          lineHeight: '40px',
-                          border: '2px solid grey',
-                        }}
-                        placeholder="Email"
-                        type="text"
-                        value={this.state.email}
-                        onChange={(e) => this.updateEmail(e.target.value)}
-                        name="email"
-                        required
-                      />
-                    </div>
-                    <div className="field">
-                      <ValidationMessage
-                        valid={this.state.phoneValid}
-                        message={this.state.errorMsg.phone}
-                      />
-                      <input
-                        style={{
-                          position: 'relative',
-                          display: 'flex',
-                          width: '161%',
-                          borderRadius: '5px',
-                          lineHeight: '40px',
-                          margin: '40px 0px',
-                          border: '2px solid grey',
-                        }}
-                        placeholder="Phone Number"
-                        type="text"
-                        maxLength="10"
-                        value={this.state.phone}
-                        onChange={(e) => this.updatePhone(e.target.value)}
-                        name="phone"
-                        required
-                      />
-                    </div>
-
-                    <div className="field">
-                      <ValidationMessage
-                        valid={this.state.passwordValid}
-                        message={this.state.errorMsg.password}
-                      />
-                      <input
-                        style={inbox}
-                        placeholder="Password"
-                        type="password"
-                        value={this.state.password}
-                        onChange={(e) => this.updatePassword(e.target.value)}
-                        name="password"
-                        required
-                      />
-                    </div>
-                    <div className="field">
-                      <ValidationMessage
-                        valid={this.state.repeatPasswordValid}
-                        message={this.state.errorMsg.repeatPassword}
-                      />
-                      <input
-                        style={{
-                          position: 'relative',
-                          left: '270px',
-                          width: '270px',
-                          borderRadius: '5px',
-                          top: '-46px',
-                          lineHeight: '40px',
-                          border: '2px solid grey',
-                        }}
-                        placeholder="Repeat Password"
-                        type="password"
-                        value={this.state.repeatPassword}
-                        onChange={(e) =>
-                          this.updateRepeatPassword(e.target.value)
-                        }
-                        name="repeatPassword"
-                        required
-                      />
-                    </div>
-                    <div className="field">
-                      <ValidationMessage
-                        valid={this.state.experienceValid}
-                        message={this.state.errorMsg.experience}
-                      />
-                      <input
-                        style={inbox}
-                        placeholder="Experience"
-                        type="number"
-                        min="1"
-                        max="20"
-                        value={this.state.experience}
-                        onChange={(e) => this.updateExperience(e.target.value)}
-                        name="experience"
-                        required
-                      />
-                    </div>
-                    <div className="field">
-                      <ValidationMessage
-                        valid={this.state.sessionValid}
-                        message={this.state.errorMsg.session}
-                      />
-                      <input
-                        style={{
-                          position: 'relative',
-                          left: '270px',
-                          width: '270px',
-                          borderRadius: '5px',
-                          top: '-46px',
-                          lineHeight: '40px',
-                          border: '2px solid grey',
-                        }}
-                        type="text"
-                        minLength="3"
-                        maxLength="4"
-                        value={this.state.session}
-                        onChange={(e) => this.updateSession(e.target.value)}
-                        name="session"
-                        placeholder="Fee per hour"
-                        required
-                      />
-                    </div>
-                    <div className="field">
-                      <label
-                        style={{
-                          color: 'black',
-                          display: 'flex',
-                          margin: '30px 5px',
-                        }}
-                      >
-                        Please select your profession
-                      </label>
-                      <input
-                        style={{
-                          position: 'relative',
-                          right: '125px',
-                          width: '270px',
-                          borderRadius: '5px',
-                          lineHeight: '40px',
-                          border: '2px solid grey',
-                        }}
-                        type="radio"
-                        value={this.state.profession}
-                        onChange={this.onInputChange}
-                        name="profession"
-                        value="Teacher"
-                        required
-                      />
-                      <span
-                        style={{
-                          position: 'relative',
-                          right: '250px',
-                          width: '270px',
-
-                          lineHeight: '40px',
-                        }}
-                      >
-                        Teacher
-                      </span>
-                    </div>
-                    <div className="field">
-                      <input
-                        style={{
-                          position: 'relative',
-                          right: '110px',
-                          width: '270px',
-                          borderRadius: '5px',
-                          lineHeight: '40px',
-                          border: '2px solid grey',
-                        }}
-                        type="radio"
-                        value={this.state.profession}
-                        onChange={this.onInputChange}
-                        name="profession"
-                        value="Industrialist"
-                        required
-                      />
-                      <span
-                        style={{
-                          position: 'relative',
-                          right: '233px',
-                          width: '270px',
-
-                          lineHeight: '40px',
-                        }}
-                      >
-                        Industrialist
-                      </span>
-                    </div>
-
-                    <div className="field">
-                      <label
-                        style={{
-                          color: 'black',
-                          display: 'flex',
-                          margin: '20px 5px',
-                        }}
-                      >
-                        Please attach your experience Certificate
-                      </label>
-                      <input
-                        placeholder="Certificate"
-                        type="file"
-                        onChange={this.onFileChange}
-                        name="certificate"
-                        required
-                      />
-                    </div>
-
-                    <button
-                      style={{
-                        display: 'flex',
-                        lineHeight: '30px',
-                        justifyContent: 'center',
-                        margin: '40px 0px',
-                        width: '100px',
-                        padding: '10px',
-                        color: 'white',
-
-                        backgroundColor: '#d7385e',
-                        borderRadius: '5px',
-                      }}
-                      type="submit"
-                      className="ui button"
-                      // disabled={!this.state.formValid}
-                      // onClick={(e) => this.onFormSubmit(e)}
-                    >
-                      Submit
-                    </button>
-                  </form>
-                </div>
+              <div className="col-sm-6 my-3">
+                <input
+                  placeholder="Last Name"
+                  className="form-control"
+                  type="text"
+                  value={this.state.lastName}
+                  onChange={(e) => this.updateLastName(e.target.value)}
+                  name="lastName"
+                  required
+                />
+                <ValidationMessage
+                  valid={this.state.lastNameValid}
+                  message={this.state.errorMsg.lastName}
+                />
               </div>
             </div>
-          </form>
-        </div>
+            <div className="row">
+              <div className="col-sm-6 my-3">
+                <ValidationMessage
+                  valid={this.state.streamValid}
+                  message={this.state.errorMsg.stream}
+                />
+                <select
+                  className="form-control"
+                  name="stream"
+                  value={this.state.stream}
+                  onChange={(e) => this.updateStream(e.target.value)}
+                  required
+                >
+                  <option value="">Stream</option>
+                  {stream}
+                </select>
+              </div>
+              <div className="col-sm-6 my-3">
+                <input
+                  placeholder="City"
+                  className="form-control"
+                  type="text"
+                  value={this.state.city}
+                  onChange={(e) => this.updateCity(e.target.value)}
+                  name="city"
+                  required
+                />
+
+                <ValidationMessage
+                  valid={this.state.cityValid}
+                  message={this.state.errorMsg.city}
+                />
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-sm-12 my-3">
+                <input
+                  placeholder="Email"
+                  className="form-control"
+                  type="text"
+                  value={this.state.email}
+                  onChange={(e) => this.updateEmail(e.target.value)}
+                  name="email"
+                  required
+                />
+                <small id="emailHelp" className="form-text text-muted">
+                  We'll never share your email with anyone else.
+                </small>
+                <ValidationMessage
+                  valid={this.state.emailValid}
+                  message={this.state.errorMsg.email}
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-sm-12 my-3">
+                <input
+                  placeholder="Phone Number"
+                  className="form-control"
+                  type="text"
+                  maxLength="10"
+                  value={this.state.phone}
+                  onChange={(e) => this.updatePhone(e.target.value)}
+                  name="phone"
+                  required
+                />
+                <ValidationMessage
+                  valid={this.state.phoneValid}
+                  message={this.state.errorMsg.phone}
+                />
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-6 my-3">
+                <input
+                  placeholder="Password"
+                  className="form-control"
+                  type="password"
+                  value={this.state.password}
+                  onChange={(e) => this.updatePassword(e.target.value)}
+                  name="password"
+                  required
+                />
+                <ValidationMessage
+                  valid={this.state.passwordValid}
+                  message={this.state.errorMsg.password}
+                />
+              </div>
+              <div className="col-6 my-3">
+                <input
+                  placeholder="Repeat Password"
+                  type="password"
+                  className="form-control"
+                  value={this.state.repeatPassword}
+                  onChange={(e) => this.updateRepeatPassword(e.target.value)}
+                  name="repeatPassword"
+                  required
+                />
+                <ValidationMessage
+                  valid={this.state.repeatPasswordValid}
+                  message={this.state.errorMsg.repeatPassword}
+                />
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-6 my-3">
+                <input
+                  placeholder="Experience"
+                  className="form-control"
+                  // type="number"
+                  // min="1"
+                  // maxLength="2"
+                  type="text"
+                  pattern="\d*"
+                  maxlength="2"
+                  value={this.state.experience}
+                  onChange={(e) => this.updateExperience(e.target.value)}
+                  name="experience"
+                  required
+                />
+                <ValidationMessage
+                  valid={this.state.experienceValid}
+                  message={this.state.errorMsg.experience}
+                />
+              </div>
+              <div className="col-6 my-3">
+                <input
+                  type="text"
+                  minLength="3"
+                  className="form-control"
+                  maxLength="4"
+                  value={this.state.session}
+                  onChange={(e) => this.updateSession(e.target.value)}
+                  name="session"
+                  placeholder="Fee per hour"
+                  required
+                />
+                <ValidationMessage
+                  valid={this.state.sessionValid}
+                  message={this.state.errorMsg.session}
+                />
+              </div>
+            </div>
+
+            <div className="row">
+              <div class="col-sm-10 my-3">
+                <label>Please select your profession:-</label>
+                <div class="form-check">
+                  <input
+                    type="radio"
+                    value={this.state.profession}
+                    className="form-check-input"
+                    onChange={this.onInputChange}
+                    name="profession"
+                    value="Teacher"
+                    required
+                  />
+                  <label class="form-check-label" htmlFor="Teacher">
+                    Teacher
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    type="radio"
+                    class="form-check-input"
+                    value={this.state.profession}
+                    onChange={this.onInputChange}
+                    name="profession"
+                    value="Industrialist"
+                    required
+                  />
+                  <label class="form-check-label" htmlFor="Industrialist">
+                    Industrialist
+                  </label>
+                </div>
+
+                {/* <div className="col-3 my-3" >
+                <label>Please select your profession</label>
+                <input
+                  type="radio"
+                  value={this.state.profession}
+                  className="form-control"
+                  onChange={this.onInputChange}
+                  name="profession"
+                  value="Teacher"
+                  required
+                />
+                <span>Teacher</span>
+              </div>
+              <div className="row">
+                <div className="col-3 my-3">
+                  <input
+                    type="radio"
+                    className="form-control"
+                    value={this.state.profession}
+                    onChange={this.onInputChange}
+                    name="profession"
+                    value="Industrialist"
+                    required
+                  />
+                  <span>Industrialist</span>
+                </div>
+              </div> */}
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-6 my-3">
+                <label>Please attach your experience Certificate:-</label>
+                <input
+                  style={{ margin: '10px 0px' }}
+                  placeholder="Certificate"
+                  type="file"
+                  onChange={this.onFileChange}
+                  name="certificate"
+                  required
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col ">
+                <button type="submit" className="btn btn-primary">
+                  Submit
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
     );
   }

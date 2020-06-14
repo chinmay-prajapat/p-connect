@@ -17,37 +17,39 @@ class Header extends Component {
         <div
           className="container-fluid row"
           style={{
-            backgroundColor: '#d8345f',
+            backgroundColor: 'black',
             margin: '0px',
             display: 'inlinegrid',
             justifyContent: 'center',
-            padding: '0px',
+            padding: '10px',
             textAlign: 'center',
+            fontFamily: 'Lucida Console',
           }}
         >
           <div style={myCol} className="col ">
-            <Link style={{ fontSize: '20px', color: 'white' }} to="/home">
+            <Link style={{ fontSize: '17px', color: 'white' }} to="/">
               Home
             </Link>
           </div>
           <div style={myCol} className="col">
-            <Link style={{ fontSize: '20px', color: 'white' }} to="/register">
+            <Link style={{ fontSize: '17px', color: 'white' }} to="/register">
               Register
             </Link>
           </div>
           <div style={myCol} className="col">
-            <Link style={{ fontSize: '20px', color: 'white' }} to="/pay">
-              Subscribe
+            <Link style={{ fontSize: '17px', color: 'white' }} to="/inviteterm">
+              Invite
             </Link>
           </div>
+
           <div style={myCol} className="col">
-            <Link style={{ fontSize: '20px', color: 'white' }} to="/about">
+            <Link style={{ fontSize: '17px', color: 'white' }} to="/about">
               About
             </Link>
           </div>
 
           <div style={myCol} className="col">
-            <Link style={{ fontSize: '20px', color: 'white' }} to="/login">
+            <Link style={{ fontSize: '17px', color: 'white' }} to="/login">
               Login
             </Link>
           </div>

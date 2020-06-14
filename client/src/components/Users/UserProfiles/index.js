@@ -2,7 +2,7 @@ import React, { Component, useState } from 'react';
 import { FaStar } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-
+import moment from 'moment';
 import decode from 'jwt-decode';
 import Comment from '../../Comment/Comment';
 // import StarRating from 'react-star-rating';
@@ -58,7 +58,7 @@ class Profile extends Component {
 
           <div className="col-4">
             <div
-              className="card"
+              className="card shadow-lg p-3 mb-5 bg-white rounded"
               style={{
                 width: '18rem',
                 padding: '20px',
@@ -201,6 +201,17 @@ class Profile extends Component {
                 </div>
               )}
             </div>
+            <Link
+              className="btn btn-warning"
+              to={{
+                pathname: `/getownfeed/${this.props.location.state.record._id}`,
+                state: {
+                  mentorId: this.props.location.state.record._id,
+                },
+              }}
+            >
+              My Feed
+            </Link>
           </div>
 
           <div className="col">
@@ -260,9 +271,14 @@ class Profile extends Component {
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">Specialization In:</th>
+                      <th scope="row">Specialization in:</th>
 
                       <td>{this.props.location.state.record.specialization}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Per session:</th>
+
+                      <td>₹{this.props.location.state.record.session}/-</td>
                     </tr>
                     <tr>
                       <th scope="row">More about me:</th>
@@ -299,17 +315,21 @@ class Profile extends Component {
               }}
             >
               <div className="col">
-                <table className="table" style={{ padding: '40px' }}>
+                <table
+                  className="table shadow-lg p-1 mb-5 bg-white rounded"
+                  style={{ padding: '40px' }}
+                >
                   <tbody>
                     {data.map((data) => (
                       <tr>
-                        <td style={{ fontWeight: 'bold' }}>
-                          {data.firstName.toLowerCase()}
+                        <td>
+                          {moment(data.Date).format('MMMM Do YYYY, h:mm:ss a')}
                         </td>
                         <td style={{ fontWeight: 'bold' }}>
-                          {' '}
+                          {data.firstName.toLowerCase()}&nbsp;
                           {data.lastName.toLowerCase()}
                         </td>
+
                         <td>{data.comment}</td>
                       </tr>
                     ))}

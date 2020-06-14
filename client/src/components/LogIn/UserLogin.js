@@ -17,6 +17,7 @@ class UserLogin extends React.Component {
       errors: '',
       amount: '',
       loggedIn,
+      responseError: '',
     };
   }
 
@@ -28,13 +29,13 @@ class UserLogin extends React.Component {
     };
 
     axios.post('/api/users/login', formData).then((response) => {
+      console.log(response.data.errors);
       if (response.data.errors) {
         this.setState(() => ({
           errors: response.data.errors,
           password: '',
         }));
       } else {
-        // write this to localStorage
         const tokenData = decode(response.data.token);
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('role', tokenData.roles);
@@ -42,10 +43,12 @@ class UserLogin extends React.Component {
         if (tokenData.amountPaid != undefined)
           localStorage.setItem('amountPaid', tokenData.amountPaid);
         // redirect to contacts page
+
         this.props.history.push('/userheader');
         // change the navigation links = update the state of isAuthenticated in the parent component
         this.props.onAuthentication(true, tokenData.roles);
       }
+      // write this to localStorage
     });
   };
 
@@ -58,7 +61,6 @@ class UserLogin extends React.Component {
 
   render() {
     const container = {
-      background: '#698474',
       width: '500px',
       margin: '90px 0px 0px 320px',
       color: 'white',
@@ -66,7 +68,6 @@ class UserLogin extends React.Component {
       padding: '60px',
       display: 'flex',
       justifyContent: 'center',
-      borderRadius: '10px',
     };
 
     // {
@@ -82,14 +83,29 @@ class UserLogin extends React.Component {
     //   return <Redirect to="/userheader" />;
     // }
     return (
-      <div className="container">
-        <h1 style={{ textAlign: 'center', margin: '35px 0px' }}>User Login</h1>
-        <div style={container}>
+      <div className="container ">
+        <div
+          className="border border-primary shadow-lg p-3 mb-5 bg-white rounded"
+          style={container}
+        >
           <div className="ui equal width grid">
             <div className="row">
+              <h1
+                style={{
+                  marginLeft: '90px ',
+                  color: 'black',
+                  fontWeight: 'bold',
+                }}
+              >
+                User Login
+              </h1>
               <div className="column">
                 <div
-                  style={{ fontWeight: 'bold', textAlign: 'center' }}
+                  style={{
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    backgroundColor: 'grey',
+                  }}
                   className="ui segment"
                 ></div>
               </div>
@@ -104,7 +120,6 @@ class UserLogin extends React.Component {
                           lineHeight: '40px',
                           width: '350px',
                           margin: '25px',
-                          borderRadius: '5px',
                         }}
                         placeholder="Email"
                         type="text"
@@ -128,26 +143,21 @@ class UserLogin extends React.Component {
                         name="password"
                       />
                     </div>
-
-                    <button
-                      style={{
-                        display: 'flex',
-                        lineHeight: '30px',
-                        justifyContent: 'center',
-                        margin: '25px',
-                        width: '100px',
-                        padding: '10px',
-                        color: 'white',
-
-                        backgroundColor: '#000839',
-                        borderRadius: '5px',
-                      }}
-                      type="submit"
-                      className="ui button"
-                      onClick={this.onFormSubmit}
-                    >
-                      Login
-                    </button>
+                    <div style={{ color: 'red' }}>{this.state.errors}</div>
+                    <div className="row">
+                      <div
+                        className="col"
+                        style={{ textAlign: 'center', padding: '10px' }}
+                      >
+                        <button
+                          type="submit"
+                          className="btn btn-primary"
+                          onClick={this.onFormSubmit}
+                        >
+                          Login
+                        </button>
+                      </div>
+                    </div>
                   </form>
                 </div>
               </div>

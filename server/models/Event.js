@@ -53,8 +53,14 @@ const eventSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  date: {
+    type: Date,
+  },
   acceptButton: {
     type: Boolean,
+  },
+  mentorId: {
+    type: Schema.Types.ObjectId,
   },
 
   inviter: { type: Schema.Types.ObjectId, ref: 'User' },

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import moment from 'moment';
 // import generateData from '../generateData';
 import { Link } from 'react-router-dom';
 
@@ -33,7 +34,9 @@ class Request extends Component {
       .then((response) => {
         this.setState({
           // records: response.data,
-          records: response.data.filter((role) => role.roles !== 'user'),
+          records: response.data.filter(
+            (role) => role.roles !== 'user' && role.allowAccess === false
+          ),
         });
       })
       .catch((err) => {
@@ -65,50 +68,43 @@ class Request extends Component {
 
     let { records, isShowingAlert } = this.state;
     return (
-      <div className="card">
+      <div className="card ">
+        <div
+          className="container "
+          style={{ textAlign: 'center', width: '300px', paddingTop: '20px' }}
+        >
+          <div className=" shadow-lg p-3 mb-5 bg-white rounded border border-primary">
+            <h1 style={{ fontWeight: 'bold' }}>Request</h1>
+          </div>
+        </div>
         <div>
           <select
             name="sortStream"
             value={this.state.sortStream}
             onChange={this.setSearch}
           >
-            <option key="1" value=" "></option>
+            <option key="1" value=" ">
+              Filter
+            </option>
             {sortStream}
           </select>
         </div>
-        <div className="header" align="center">
-          <h1
-            style={{
-              textAlign: 'center',
-              color: ' rgb(51, 122, 183)',
-              fontWeight: 'bold',
-            }}
-          >
-            Request View
-          </h1>
-        </div>
-        <div className=" content table-responsive table-full-width p-0 m-0">
-          <table className="table table-hover table-striped p-0 m-0">
+        <div className=" content table-responsive table-full-width p-0 m-0 ">
+          <table className="table table-hover table-striped table-dark p-0 m-0 shadow-lg p-3 mb-5  rounded border border-danger">
             <thead>
               <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
+                <th>Name</th>
+
                 <th>Stream</th>
                 <th>Experience</th>
 
                 <th>Email Id</th>
 
-                {/* <th
-                  className="text-right"
-                  data-checkbox="true"
-                  data-search="true"
-                >
-                  Salary
-                </th> */}
-
                 <th>City</th>
                 <th>Profession</th>
                 <th>Certificate</th>
+                <th>Date</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -118,34 +114,36 @@ class Request extends Component {
                   else if (record.stream === this.state.search) {
                     return record;
                   }
-                  // else ifs (a.stream.includes('Bio')) {
-                  //   return a;
-                  // }
                 })
                 .map((record) => (
                   <tr key={record.firstName}>
-                    <td>{record.firstName.toUpperCase()}</td>
-
-                    <td>{record.lastName.toUpperCase()}</td>
+                    <td>
+                      {record.firstName.toUpperCase()}&nbsp;&nbsp;
+                      {record.lastName.toUpperCase()}
+                    </td>
                     <td>{record.stream}</td>
                     <td>{record.experience}</td>
                     <td>{record.email}</td>
-                    <td>{record.city}</td>
+                    <td>{record.city.toUpperCase()}</td>
                     <td>{record.profession}</td>
                     <td>
-                      <a href={record.location}>{record.location}</a>
+                      <a href={record.location}>View Certificate</a>
                     </td>
-                    <button>
+                    <td style={{ color: '#79d70f' }}>
+                      {moment(record.createdAt).format('MMM Do YY')}
+                    </td>
+                    <td>
+                      {' '}
                       <Link
+                        className="btn btn-danger"
                         to={{
                           pathname: `/edit/${record._id}`,
                           state: { record },
                         }}
-                        style={{ color: '#0000ff', fontSize: '15px' }}
                       >
                         Edit
                       </Link>
-                    </button>
+                    </td>
                   </tr>
                 ))}
             </tbody>

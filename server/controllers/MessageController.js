@@ -18,6 +18,15 @@ router.post('/register', function (req, res) {
       res.send(err);
     });
 });
+router.get('/myquery/:userId', function (req, res) {
+  // console.log(req.params.userId);
+  Message.find({ sender: req.params.userId })
+    // .populate('user')
+    .then((message) => {
+      console.log('My message', message);
+      res.send(message);
+    });
+});
 
 router.get('/', function (req, res) {
   Message.find()

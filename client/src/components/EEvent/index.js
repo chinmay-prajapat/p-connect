@@ -1,6 +1,19 @@
 import React, { Component } from 'react';
 import decode from 'jwt-decode';
 import axios from 'axios';
+function ValidationMessage(props) {
+  if (!props.valid) {
+    return (
+      <div
+        style={{ color: 'red', fontSize: '10px', marginBottom: '20px' }}
+        className="error-msg m-0 p-0"
+      >
+        {props.message}
+      </div>
+    );
+  }
+  return null;
+}
 class PEvent extends Component {
   constructor(props) {
     super(props);
@@ -16,9 +29,159 @@ class PEvent extends Component {
       purpose: '',
       topic: '',
       description: '',
+      errorMsg: {},
+      sent: 0,
+
+      firstNameValid: false,
+      lastNameValid: false,
+      emailValid: false,
+
+      phoneValid: false,
+      placeValid: false,
+      hourValid: false,
+
+      purposeValid: false,
+      topicValid: false,
+      descriptionValid: false,
     };
     console.log(this.props);
   }
+  validateForm = () => {
+    const {
+      firstNameValid,
+      lastNameValid,
+      emailValid,
+
+      placeValid,
+      hourValid,
+      purposeValid,
+
+      topicValid,
+      descriptionValid,
+
+      phoneValid,
+    } = this.state;
+    this.setState({
+      formValid:
+        firstNameValid &&
+        lastNameValid &&
+        emailValid &&
+        phoneValid &&
+        placeValid &&
+        hourValid &&
+        purposeValid &&
+        topicValid &&
+        descriptionValid,
+    });
+  };
+  updateHour = (hour) => {
+    this.setState({ hour }, this.validateHour);
+  };
+
+  validateHour = () => {
+    const { hour } = this.state;
+    let hourValid = true;
+    let errorMsg = { ...this.state.errorMsg };
+
+    if (!/^[0-9]+$/.test(hour)) {
+      hourValid = false;
+      errorMsg.hour = 'Only numerical allowed';
+    }
+
+    this.setState({ hourValid, errorMsg }, this.validateForm);
+  };
+  updatePlace = (place) => {
+    this.setState({ place }, this.validateFirstName);
+  };
+
+  validatePlace = () => {
+    const { place } = this.state;
+    let placeValid = true;
+    let errorMsg = { ...this.state.errorMsg };
+
+    if (place.length < 3) {
+      placeValid = false;
+      errorMsg.place = 'Must be at least 3 characters long';
+    } else if (!/^[a-zA-Z]+$/.test(place)) {
+      placeValid = false;
+      errorMsg.place = 'Must be alphabets';
+    }
+    this.setState({ placeValid, errorMsg }, this.validateForm);
+  };
+  updateFirstName = (firstName) => {
+    this.setState({ firstName }, this.validateFirstName);
+  };
+
+  validateFirstName = () => {
+    const { firstName } = this.state;
+    let firstNameValid = true;
+    let errorMsg = { ...this.state.errorMsg };
+
+    if (firstName.length < 3) {
+      firstNameValid = false;
+      errorMsg.firstName = 'Must be at least 3 characters long';
+    } else if (!/^[a-zA-Z]+$/.test(firstName)) {
+      firstNameValid = false;
+      errorMsg.firstName = 'Must be alphabets';
+    }
+    this.setState({ firstNameValid, errorMsg }, this.validateForm);
+  };
+  updateLastName = (lastName) => {
+    this.setState({ lastName }, this.validateLastName);
+  };
+
+  validateLastName = () => {
+    const { lastName } = this.state;
+    let lastNameValid = true;
+    let errorMsg = { ...this.state.errorMsg };
+
+    if (!/^[a-zA-Z]+$/.test(lastName)) {
+      lastNameValid = false;
+      errorMsg.lastName = 'Must be alphabets';
+    } else if (lastName.length < 3) {
+      lastNameValid = false;
+      errorMsg.lastName = 'Must be at least 3 characters long';
+    }
+
+    this.setState({ lastNameValid, errorMsg }, this.validateForm);
+  };
+  updatePhone = (phone) => {
+    this.setState({ phone }, this.validatePhone);
+  };
+  validatePhone = () => {
+    const { phone } = this.state;
+    let phoneValid = true;
+    let errorMsg = { ...this.state.errorMsg };
+    if (!/^[6-9][0-9]+$/.test(phone)) {
+      phoneValid = false;
+      errorMsg.phone = 'Invalid phone number';
+    } else if (phone.length < 10) {
+      phoneValid = false;
+      errorMsg.phone = 'Phone number must be 10 digits';
+    } else if (phone.length > 10) {
+      phoneValid = false;
+      errorMsg.phone = 'Phone number must be 10 digits';
+    }
+    this.setState({ phoneValid, errorMsg }, this.validateForm);
+  };
+  updateEmail = (email) => {
+    this.setState({ email }, this.validateEmail);
+  };
+
+  validateEmail = () => {
+    const { email } = this.state;
+    let emailValid = true;
+    let errorMsg = { ...this.state.errorMsg };
+
+    // checks for format _@_._
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      emailValid = false;
+      errorMsg.email = 'Invalid email format';
+    }
+
+    this.setState({ emailValid, errorMsg }, this.validateForm);
+  };
+
   onInputChange = (e) => {
     e.persist();
     this.setState(() => ({
@@ -52,6 +215,7 @@ class PEvent extends Component {
       purpose: this.state.purpose,
       topic: this.state.topic,
       description: this.state.description,
+      mentorId: this.props.location.state.mentorId,
       inviter: decode(localStorage.getItem('token'))._id,
     };
     axios
@@ -68,6 +232,9 @@ class PEvent extends Component {
           .catch((err) => {
             console.log(err);
           });
+        this.setState({
+          sent: 1,
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -83,104 +250,84 @@ class PEvent extends Component {
         Guest Lecture
       </option>,
     ];
-    const container = {
-      marginTop: '100px',
-      marginBottom: '70px',
-      marginRight: '10px',
 
-      marginLeft: '440px',
-      width: '40%',
-      height: '30%',
-      display: 'flex',
-      // flexWrap: 'wrap',
-
-      justifyContent: 'center',
-    };
-    const inbox = {
-      display: 'flex',
-      lineHeight: '40px ',
-      width: '270px',
-      border: '2px solid grey',
-      borderRadius: '5px',
-    };
-    return (
-      <div style={container}>
-        <div className="ui equal width grid">
-          <div className="row">
-            <h1>Event Registration</h1>
-            <div className="column"></div>
-          </div>
-
+    return this.state.sent === 0 ? (
+      <div
+        className="container"
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <form onSubmit={(e) => this.onFormSubmit(e)}>
           <div
-            className="row"
+            className="shadow p-3 mb-5 bg-white rounded  border border-primary"
             style={{
-              background: '#8db1ab',
-              width: '700px',
-              display: 'flex',
-              textAlign: 'center',
-
-              // margin: '40px 0px 0px 0px',
-              color: 'white',
-              fontSize: '18px',
-              padding: '60px',
-
-              borderRadius: '10px',
+              width: 550,
+              marginTop: '20px',
             }}
           >
-            <div className="column">
-              <div className="ui segment">
-                <form className="ui form">
-                  <div className="field">
-                    <input
-                      style={inbox}
-                      placeholder="First Name"
-                      type="text"
-                      value={this.state.firstName}
-                      onChange={this.onInputChange}
-                      name="firstName"
-                      required
-                    />
-                  </div>
-                  <div className="field">
-                    <input
-                      style={{
-                        position: 'relative',
-                        left: '155px',
-                        top: '-46px',
-                        width: '270px',
-                        borderRadius: '5px',
-                        lineHeight: '40px',
-                        border: '2px solid grey',
-                      }}
-                      placeholder="Last Name"
-                      type="text"
-                      value={this.state.lastName}
-                      onChange={this.onInputChange}
-                      name="lastName"
-                      required
-                    />
-                  </div>
-                  <div className="form-group">
-                    <select
-                      style={{
-                        display: 'flex',
-                        lineHeight: '40px ',
-                        width: '270px',
-                        padding: '8px',
-                        border: '2px solid grey',
-                        borderRadius: '5px',
-                      }}
-                      name="purpose"
-                      value={this.state.purpose}
-                      onChange={this.onInputChange}
-                    >
-                      <option key="1" value=" ">
-                        purpose
-                      </option>
-                      {purpose}
-                    </select>
-                  </div>
-                  {/* <div className="field">
+            <div className=" shadow-lg p-3 mb-5 rounded bg-primary border border-primary">
+              <h1
+                style={{
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                  color: 'white',
+                  fontFamily: 'Lucida Console',
+                }}
+              >
+                Invite
+              </h1>
+            </div>
+            {/* <h1 style={{ textAlign: 'center' }}>Invite</h1> */}
+            <div className="row">
+              <div className="col-sm-6 my-3">
+                <input
+                  placeholder="First Name"
+                  className="form-control"
+                  type="text"
+                  value={this.state.firstName}
+                  onChange={(e) => this.updateFirstName(e.target.value)}
+                  name="firstName"
+                  required
+                />
+                <ValidationMessage
+                  valid={this.state.firstNameValid}
+                  message={this.state.errorMsg.firstName}
+                />
+              </div>
+
+              <div className="col-sm-6 my-3">
+                <input
+                  placeholder="Last Name"
+                  className="form-control"
+                  type="text"
+                  value={this.state.lastName}
+                  onChange={(e) => this.updateLastName(e.target.value)}
+                  name="lastName"
+                  required
+                />
+                <ValidationMessage
+                  valid={this.state.lastNameValid}
+                  message={this.state.errorMsg.lastName}
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-sm-6 my-3">
+                <select
+                  name="purpose"
+                  className="form-control"
+                  value={this.state.purpose}
+                  onChange={this.onInputChange}
+                >
+                  <option key="1" value=" ">
+                    purpose
+                  </option>
+                  {purpose}
+                </select>
+              </div>
+              {/* <div className="field">
                   <input
                     style={inbox}
                     placeholder="Stream"
@@ -191,166 +338,133 @@ class PEvent extends Component {
                     required
                   />
                 </div> */}
-                  <div className="field">
-                    <input
-                      style={{
-                        position: 'relative',
-                        left: '155px',
-                        top: '-60px',
-                        width: '270px',
-                        borderRadius: '5px',
-                        lineHeight: '40px',
-                        border: '2px solid grey',
-                      }}
-                      placeholder="Place"
-                      type="text"
-                      value={this.state.place}
-                      onChange={this.onInputChange}
-                      name="place"
-                      required
-                    />
-                  </div>
-                  <div className="field">
-                    <input
-                      style={{
-                        position: 'relative',
-                        width: '580px',
-                        borderRadius: '5px',
-                        lineHeight: '40px',
-                        border: '2px solid grey',
-                      }}
-                      placeholder="Email"
-                      type="email"
-                      value={this.state.email}
-                      onChange={this.onInputChange}
-                      name="email"
-                      required
-                    />
-                  </div>
+              <div className="col-sm-6 my-3">
+                <input
+                  placeholder="Place"
+                  className="form-control"
+                  type="text"
+                  value={this.state.place}
+                  onChange={(e) => this.updatePlace(e.target.value)}
+                  name="place"
+                  required
+                />
+                <ValidationMessage
+                  valid={this.state.placeValid}
+                  message={this.state.errorMsg.place}
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-sm-12 my-3">
+                <input
+                  placeholder="Email"
+                  className="form-control"
+                  type="email"
+                  value={this.state.email}
+                  onChange={(e) => this.updateEmail(e.target.value)}
+                  name="email"
+                  required
+                />
+                <ValidationMessage
+                  valid={this.state.emailValid}
+                  message={this.state.errorMsg.email}
+                />
+              </div>
+            </div>
 
-                  <div className="field">
-                    <input
-                      style={{
-                        position: 'relative',
-                        display: 'flex',
-                        width: '580px',
-                        borderRadius: '5px',
-                        lineHeight: '40px',
-                        margin: '40px 0px',
-                        border: '2px solid grey',
-                      }}
-                      placeholder="Phone Number"
-                      type="text"
-                      value={this.state.phone}
-                      onChange={this.onInputChange}
-                      name="phone"
-                      required
-                    />
-                  </div>
+            <div className="row">
+              <div className="col-sm-12 my-3">
+                <input
+                  placeholder="Phone Number"
+                  className="form-control"
+                  type="text"
+                  value={this.state.phone}
+                  onChange={(e) => this.updatePhone(e.target.value)}
+                  name="phone"
+                  required
+                />
+                <ValidationMessage
+                  valid={this.state.phoneValid}
+                  message={this.state.errorMsg.phone}
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-sm-6 my-3">
+                <input
+                  placeholder="Date"
+                  className="form-control"
+                  type="Date"
+                  value={this.state.date}
+                  onChange={this.onInputChange}
+                  name="date"
+                  required
+                />
+              </div>
 
-                  <div className="field">
-                    <input
-                      style={{
-                        display: 'flex',
-                        lineHeight: '40px ',
-                        width: '270px',
-                        border: '2px solid grey',
-                        borderRadius: '5px',
-                      }}
-                      placeholder="Date"
-                      type="Date"
-                      value={this.state.date}
-                      onChange={this.onInputChange}
-                      name="date"
-                      required
-                    />
-                  </div>
-
-                  <div className="field">
-                    <input
-                      style={{
-                        position: 'relative',
-                        left: '155px',
-                        top: '-47px',
-                        width: '270px',
-                        borderRadius: '5px',
-                        lineHeight: '40px',
-                        border: '2px solid grey',
-                      }}
-                      placeholder="Hours"
-                      type="number"
-                      min="1"
-                      max="10"
-                      value={this.state.hour}
-                      onChange={this.onInputChange}
-                      name="hour"
-                      required
-                    />
-                  </div>
-                  <div className="field">
-                    <input
-                      style={{
-                        position: 'relative',
-                        display: 'flex',
-                        width: '580px',
-                        borderRadius: '5px',
-                        lineHeight: '40px',
-                        margin: '10px 0px',
-                        border: '2px solid grey',
-                      }}
-                      placeholder="Topic"
-                      type="text"
-                      value={this.state.topic}
-                      onChange={this.onInputChange}
-                      name="topic"
-                      required
-                    />
-                  </div>
-
-                  <div className="field">
-                    <textarea
-                      style={{
-                        display: 'flex',
-                        lineHeight: '40px ',
-                        width: '500px',
-                        border: '2px solid grey',
-                        borderRadius: '5px',
-                      }}
-                      value={this.state.description}
-                      onChange={this.onInputChange}
-                      id="topic"
-                      rows="4"
-                      name="description"
-                      cols="50"
-                      placeholder=" Please describe the topic."
-                      required
-                    ></textarea>
-                  </div>
-
-                  <button
-                    style={{
-                      display: 'flex',
-                      lineHeight: '30px',
-                      justifyContent: 'center',
-                      margin: '40px 0px',
-                      width: '100px',
-                      padding: '10px',
-                      color: 'white',
-
-                      backgroundColor: '#d7385e',
-                      borderRadius: '5px',
-                    }}
-                    type="submit"
-                    className="ui button"
-                    onClick={(e) => this.onFormSubmit(e)}
-                  >
-                    Submit
-                  </button>
-                </form>
+              <div className="col-sm-6 my-3">
+                <input
+                  placeholder="Hours"
+                  className="form-control"
+                  type="text"
+                  pattern="\d*"
+                  maxlength="2"
+                  value={this.state.hour}
+                  onChange={(e) => this.updateHour(e.target.value)}
+                  name="hour"
+                  required
+                />
+                <ValidationMessage
+                  valid={this.state.hourValid}
+                  message={this.state.errorMsg.hour}
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-sm-12 my-3">
+                <input
+                  className="form-control"
+                  placeholder="Topic"
+                  type="text"
+                  value={this.state.topic}
+                  onChange={this.onInputChange}
+                  name="topic"
+                  required
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-sm-12 my-3">
+                <textarea
+                  className="form-control"
+                  value={this.state.description}
+                  onChange={this.onInputChange}
+                  id="topic"
+                  rows="4"
+                  name="description"
+                  cols="50"
+                  placeholder=" Please describe the topic."
+                  required
+                ></textarea>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col">
+                <button type="submit" className="btn btn-primary">
+                  Submit
+                </button>
               </div>
             </div>
           </div>
-        </div>
+        </form>
+      </div>
+    ) : (
+      <div style={{ textAlign: 'center', marginTop: '300px', color: 'grey' }}>
+        <h1>Thank You For Sending The Request!!</h1>
+        <p style={{ color: 'black' }}>
+          We urge to you please wait for the response email from our
+          professional.{' '}
+        </p>
       </div>
     );
   }

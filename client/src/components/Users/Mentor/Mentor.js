@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import axios from 'axios';
 // import generateData from '../generateData';
 import { Link } from 'react-router-dom';
-
+import Star from '../../Image/Star.png';
 class Mentor extends Component {
   constructor(props) {
     super(props);
     this.state = {
       records: [],
+      first: [],
+      second: [],
+      rating: [],
       delete: 0,
       search: ' ',
     };
@@ -34,11 +37,33 @@ class Mentor extends Component {
         this.setState({
           records: response.data.filter((role) => role.roles !== 'user'),
         });
+        this.setState({
+          first: this.state.records.map((a) => a.rating),
+        });
+        this.setState({
+          second: this.state.first.map((b) => b.map((d) => d.rating)),
+        });
+        this.setState({
+          rating: this.state.second.map((e) => this.averageRating(e)),
+        });
+        console.log('my rating', this.state.first);
+        console.log('this is rating', this.state.rating);
       })
       .catch((err) => {
         console.log(err);
       });
   }
+
+  averageRating = (arr) => {
+    console.log('Array', arr);
+    let i = 0;
+    let sum = 0;
+    let len = arr.length;
+    while (i < len) {
+      sum = sum + arr[i++];
+    }
+    return sum / len;
+  };
 
   setSearch = (e) => {
     this.setState({
@@ -65,43 +90,37 @@ class Mentor extends Component {
     let { records, isShowingAlert } = this.state;
     return (
       <div className="card">
+        <div
+          className="container "
+          style={{ textAlign: 'center', width: '300px', paddingTop: '20px' }}
+        >
+          <div className=" shadow-lg p-3 mb-5 bg-white rounded border border-primary">
+            <h1 style={{ fontWeight: 'bold' }}>Mentors</h1>
+          </div>
+        </div>
         <div>
           <select
             name="sortStream"
             value={this.state.sortStream}
             onChange={this.setSearch}
           >
-            <option key="1" value=" "></option>
+            <option key="1" value=" ">
+              Choose Stream
+            </option>
             {sortStream}
           </select>
         </div>
-        <div className="header" align="center">
-          <h1
-            style={{
-              textAlign: 'center',
-              color: ' black',
-              fontWeight: 'bold',
-            }}
-          >
-            Mentor View
-          </h1>
-        </div>
-        <div className=" content table-responsive table-full-width p-0 m-0">
-          <table className="table table-hover table-striped p-0 m-0">
+        <div className=" content table-responsive table-full-width p-0 m-0 ">
+          <table className="table table-hover table-striped p-0 m-0 shadow-lg p-3 mb-5 bg-white rounded  ">
             <thead>
               <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
+                <th>Name</th>
+
+                <th>Rating</th>
                 <th>Stream</th>
                 <th>Experience</th>
 
-                {/* <th
-                  className="text-right"
-                  data-checkbox="true"
-                  data-search="true"
-                >
-                  Salary
-                </th> */}
+                <th>Specialization</th>
 
                 <th>City</th>
                 <th>Profession</th>
@@ -118,7 +137,7 @@ class Mentor extends Component {
                   //   return a;
                   // }
                 })
-                .map((record) => (
+                .map((record, i) => (
                   <tr key={record.firstName}>
                     <Link
                       to={{
@@ -128,14 +147,23 @@ class Mentor extends Component {
                         },
                       }}
                     >
-                      <td>{record.firstName}</td>
+                      <td>
+                        {record.firstName.toUpperCase()}&nbsp;&nbsp;
+                        {record.lastName.toUpperCase()}
+                      </td>
                     </Link>
 
-                    <td>{record.lastName}</td>
+                    <td>
+                      {' '}
+                      <img style={{ height: '30px' }} src={Star} alt="Rating" />
+                      <p>{parseFloat(this.state.rating[i]).toFixed(1)}/5</p>
+                    </td>
                     <td>{record.stream}</td>
+
                     <td>{record.experience}</td>
-                    {/* <td>{record.email}</td> */}
-                    <td>{record.city}</td>
+
+                    <td>{record.specialization}</td>
+                    <td>{record.city.toUpperCase()}</td>
                     <td>{record.profession}</td>
                     <td></td>
                   </tr>

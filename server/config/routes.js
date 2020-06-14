@@ -8,6 +8,8 @@ const { messageRouter } = require('../controllers/MessageController');
 const { ratingRouter } = require('../controllers/RatingController');
 const { paymentRouter } = require('../controllers/StripeController');
 const { commentRouter } = require('../controllers/CommentController');
+const { adminRouter } = require('../controllers/AdminController');
+router.use('/api/admin', adminRouter);
 router.use('/api/comment', commentRouter);
 router.use('/api/contribute', contributeRouter);
 router.use('/api/users', usersRouter);

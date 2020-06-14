@@ -7,7 +7,7 @@ import Header from './Header';
 const myStyle = { backgroundColor: '#10375c', padding: '0px' };
 const myCol = {
   display: 'block',
-  padding: '10px 10px',
+  padding: '20px 10px',
   float: 'left',
 };
 class UserHeaderPay extends Component {
@@ -55,37 +55,38 @@ class UserHeaderPay extends Component {
               justifyContent: 'center',
               padding: '0px',
               textAlign: 'center',
+              fontFamily: 'Lucida Console',
             }}
           >
             <div style={myCol} className="col ">
-              <Link style={{ fontSize: '20px', color: 'white' }} to="/pay">
+              <Link style={{ fontSize: '17px', color: 'white' }} to="/pay">
                 Home
               </Link>
             </div>
             <div style={myCol} className="col">
-              <Link style={{ fontSize: '20px', color: 'white' }} to="/pay">
+              <Link style={{ fontSize: '17px', color: 'white' }} to="/pay">
                 Mentor
               </Link>
             </div>
 
             <div style={myCol} className="col">
-              <Link style={{ fontSize: '20px', color: 'white' }} to="/pay">
+              <Link style={{ fontSize: '17px', color: 'white' }} to="/pay">
                 Message
               </Link>
             </div>
             <div style={myCol} className="col">
-              <Link style={{ fontSize: '20px', color: 'white' }} to="/pay">
+              <Link style={{ fontSize: '17px', color: 'white' }} to="/pay">
                 Feed
               </Link>
             </div>
             <div style={myCol} className="col">
-              <Link style={{ fontSize: '20px', color: 'white' }} to="/pay">
+              <Link style={{ fontSize: '17px', color: 'white' }} to="/pay">
                 High Rated
               </Link>
             </div>
             <div style={myCol} className="col">
               <Link
-                style={{ fontSize: '20px', color: 'white' }}
+                style={{ fontSize: '17px', color: 'white' }}
                 to="/myProfile"
               >
                 Profile
@@ -93,13 +94,13 @@ class UserHeaderPay extends Component {
             </div>
 
             <div style={myCol} className="col">
-              <Link style={{ fontSize: '20px', color: 'white' }} to="/about">
+              <Link style={{ fontSize: '17px', color: 'white' }} to="/about">
                 About
               </Link>
             </div>
 
             <div style={myCol} className="col">
-              <Link style={{ fontSize: '20px', color: 'white' }} to="/logout">
+              <Link style={{ fontSize: '17px', color: 'white' }} to="/logout">
                 Logout
               </Link>
             </div>

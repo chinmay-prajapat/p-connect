@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import decode from 'jwt-decode';
+import Contri from '../../Image/Contri.gif';
 const user = {
   backgroundColor: '#4d4c7d',
   display: 'flex',
@@ -23,43 +24,76 @@ class Contribute extends Component {
 
   render() {
     return (
-      <div
-        className="container row no-gutters"
+      <body
         style={{
-          display: 'flex',
-          justifyContent: 'center',
+          backgroundImage: `url(${Contri})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundColor: 'black',
+
+          backgroundSize: 'cover',
+          padding: '20px',
         }}
       >
-        <div className="col-sm" style={user}>
-          <Link
-            style={{ display: 'flex', color: 'white' }}
-            to={{
-              pathname: `/new/${decode(localStorage.getItem('token'))._id}`,
-              state: {
-                contributeId: decode(localStorage.getItem('token'))._id,
-              },
-            }}
-          >
-            New
-          </Link>
-        </div>
+        <div className="container ">
+          <div className="row">
+            <div className="col" style={{ top: '135px' }}>
+              <h1
+                style={{
+                  textAlign: 'center',
+                  fontSize: '60px',
+                  fontWeight: 'bold',
+                  padding: '28px',
 
-        <div className="col-sm" style={user}>
-          <Link
+                  color: '#14213d',
+                }}
+              >
+                Your Feed
+              </h1>
+            </div>
+          </div>
+          <div
+            className="row "
             style={{
-              color: 'white',
-            }}
-            to={{
-              pathname: `/old/${decode(localStorage.getItem('token'))._id}`,
-              state: {
-                contributeId: decode(localStorage.getItem('token'))._id,
-              },
+              textAlign: 'center',
+              margin: '250px  ',
+
+              fontSize: '27px',
             }}
           >
-            Old
-          </Link>
+            <div className="col " style={{ right: '100px' }}>
+              <Link
+                style={{
+                  fontWeight: 'bold',
+                }}
+                className="btn btn-dark "
+                to={{
+                  pathname: `/new/${decode(localStorage.getItem('token'))._id}`,
+                  state: {
+                    contributeId: decode(localStorage.getItem('token'))._id,
+                  },
+                }}
+              >
+                New
+              </Link>
+            </div>
+
+            <div className="col" style={{ left: '160px' }}>
+              <Link
+                style={{ fontWeight: 'bold' }}
+                className="btn btn-dark"
+                to={{
+                  pathname: `/old/${decode(localStorage.getItem('token'))._id}`,
+                  state: {
+                    contributeId: decode(localStorage.getItem('token'))._id,
+                  },
+                }}
+              >
+                Old
+              </Link>
+            </div>
+          </div>
         </div>
-      </div>
+      </body>
     );
   }
 }

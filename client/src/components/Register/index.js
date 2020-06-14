@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-
+import myImage from '../Image/signup.png';
 const user = {
   backgroundColor: '#4d4c7d',
   display: 'flex',
@@ -18,30 +18,66 @@ const user = {
 class Register extends Component {
   render() {
     return (
-      <div
-        className="container row no-gutters"
+      // style={{
+      //   backgroundImage: `url(${myImage})`,
+      //   backgroundPosition: 'center',
+      //   backgroundSize: 'cover',
+      //   backgroundRepeat: 'no-repeat',
+      // }}
+      <body
         style={{
-          display: 'flex',
-          justifyContent: 'center',
+          backgroundImage: `url(${myImage})`,
+          backgroundSize: 'cover',
+          padding: '20px',
+          overflowY: 'hidden',
         }}
       >
-        <div className="col-sm" style={user}>
-          <Link style={{ display: 'flex', color: 'white' }} to="/uregister">
-            User
-          </Link>
-        </div>
-
-        <div className="col-sm" style={user}>
-          <Link
+        <div className="container">
+          <div className="row">
+            <div className="col" style={{ top: '30px' }}>
+              <h1
+                style={{
+                  textAlign: 'center',
+                  fontSize: '60px',
+                  padding: '28px',
+                  fontWeight: 'bold',
+                  color: 'black',
+                }}
+              >
+                Signup
+              </h1>
+            </div>
+          </div>
+          <div
+            className="row"
             style={{
-              color: 'white',
+              textAlign: 'center',
+              margin: '250px  ',
+              fontSize: '27px',
             }}
-            to="/term"
           >
-            Professional
-          </Link>
+            <div className="col" style={{ bottom: '22px' }}>
+              <Link
+                style={{ fontWeight: 'bold' }}
+                className="btn btn-dark"
+                to="/userterm"
+              >
+                User
+              </Link>
+            </div>
+
+            <div className="col " style={{ bottom: '22px' }}>
+              <Link
+                style={{ fontWeight: 'bold' }}
+                className="btn btn-dark"
+                to="/term"
+              >
+                Professional
+              </Link>
+            </div>
+          </div>
         </div>
-      </div>
+      </body>
     );
   }
 }

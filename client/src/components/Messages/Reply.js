@@ -18,12 +18,17 @@ class Message extends Component {
       question: this.state.question,
 
       description: this.state.description,
-      firstName: this.state.record.firstName,
-      lastName: this.state.record.lastName,
+      firstName: this.state.data.firstName,
+      lastName: this.state.data.lastName,
 
       sender: decode(localStorage.getItem('token'))._id,
     };
+    this.setState({
+      question: '',
+      description: '',
+    });
     console.log('this is reply', this.props.location.state.data.sender);
+
     axios
       .post(`http://localhost:5000/api/message/register`, formData)
       .then((res) => {
@@ -56,7 +61,20 @@ class Message extends Component {
         this.setState({
           record: response.data,
         });
-        console.log('record', this.state.record.firstName);
+        console.log('This is reply record', this.state.record.firstName);
+      })
+
+      .catch((err) => {
+        console.log(err);
+      });
+    axios
+      .get(`http://localhost:5000/api/users/account/${id}`)
+      .then((response) => {
+        console.log(response.data);
+        this.setState({
+          data: response.data,
+        });
+        console.log('This is my data', this.state.data.firstName);
       })
 
       .catch((err) => {
@@ -85,8 +103,9 @@ class Message extends Component {
         }}
         className="container"
       >
-        <p>{this.state.record.firstName}</p>
-        <p>{this.state.record.lastName}</p>
+        <pre>
+          {this.state.record.firstName} {this.state.record.lastName}
+        </pre>
 
         <div className="form-group">
           <input

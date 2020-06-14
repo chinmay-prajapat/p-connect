@@ -84,16 +84,28 @@ router.get('/', function (req, res) {
       res.send(err);
     });
 });
-router.get('/feed/:id', function (req, res) {
-  Contribute.find()
-    .then(function (contributes) {
-      res.send(contributes);
-    })
-    .catch(function (err) {
-      res.send(err);
+// router.get('/feed/:id', function (req, res) {
+//   Contribute.find()
+//     .then(function (contributes) {
+//       res.send(contributes);
+//     })
+//     .catch(function (err) {
+//       res.send(err);
+//     });
+// });
+
+router.get('/myfeed/:userId', function (req, res) {
+  console.log(req.params.userId);
+
+  Contribute.find({ contributer: req.params.userId })
+    .sort({ createdAt: -1 })
+    .then((contribute) => {
+      // console.log(user.event);
+
+      console.log(contribute);
+      res.send(contribute);
     });
 });
-
 router.delete('/delete/:_id', function (req, res) {
   const id = req.body.params;
   Contribute.deleteOne(id)

@@ -18,7 +18,7 @@ const aboutSchema = new Schema({
   message: {
     type: String,
   },
-  createdAt: {
+  date: {
     type: Date,
     default: Date.now,
   },

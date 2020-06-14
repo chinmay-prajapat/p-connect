@@ -1,9 +1,17 @@
 import React from 'react';
 import axios from 'axios';
+import myImage from '../Image/home.gif';
 function ValidationMessage(props) {
   if (!props.valid) {
     return (
-      <div style={{ color: 'red' }} className="error-msg">
+      <div
+        style={{
+          color: 'red',
+          fontSize: '10px',
+          marginBottom: '20px',
+        }}
+        className="error-msg m-0"
+      >
         {props.message}
       </div>
     );
@@ -37,6 +45,7 @@ class UserRegister extends React.Component {
       repeatPassword: false,
       formValid: false,
       errorMsg: {},
+      errorRegister: '',
       // data: [],
       // isLoaded: false,
     };
@@ -196,7 +205,13 @@ class UserRegister extends React.Component {
     axios
       .post('http://localhost:5000/api/users/register', formData)
       .then((response) => {
-        this.props.history.push('/ulogin');
+        if (response.ok) {
+          this.props.history.push('/ulogin');
+        } else {
+          this.setState({
+            errorRegister: response.data,
+          });
+        }
         const myEmail = {
           email: this.state.email,
           firstName: this.state.firstName,
@@ -227,157 +242,152 @@ class UserRegister extends React.Component {
   };
 
   render() {
+    console.log('Error Register', this.state.errorRegister);
     return (
-      <div className="container">
-        <h1 style={{ textAlign: 'center', padding: '20px' }}>
-          User Registration
-        </h1>
-        <div
-          className="form-row align-items-center"
-          // style={{
-          //   boxShadow: ' 0px 2px 2px 2px pink',
-          //   padding: '20px',
-          //   margin: '20px 0px',
-          // }}
+      <div
+        className="container"
+        style={{
+          display: 'flex',
+          justifyContent: 'right',
+
+          margin: '20px',
+          marginLeft: '200px',
+        }}
+      >
+        <div style={{ marginTop: '10px', marginRight: '50px' }}>
+          <img src={myImage} alt="Computer" />
+        </div>
+        {/* <div
+          className="container "
+          style={{ textAlign: 'center', width: '300px' }}
         >
-          <div className="col-sm-3 my-1" style={{ left: '280px' }}>
-            <ValidationMessage
-              valid={this.state.firstNameValid}
-              message={this.state.errorMsg.firstName}
-            />
+          <div className=" shadow-lg p-3 mb-5 bg-white rounded border border-primary">
+            <h1 style={{ fontWeight: 'bold' }}>User Signup</h1>
+          </div>
+        </div> */}
+        <div
+          className="shadow p-3 mb-5 bg-white rounded  border border-primary"
+          style={{
+            marginTop: 50,
+            width: 700,
 
-            <input
-              placeholder="First Name"
-              type="text"
-              className="form-control"
-              value={this.state.firstName}
-              onChange={(e) => this.updateFirstName(e.target.value)}
-              name="firstName"
-            />
-          </div>
+            padding: 20,
+          }}
+        >
+          <div className="row">
+            <div className="col-sm-6 my-3">
+              <input
+                placeholder="First Name"
+                type="text"
+                className="form-control"
+                value={this.state.firstName}
+                onChange={(e) => this.updateFirstName(e.target.value)}
+                name="firstName"
+              />
+              <ValidationMessage
+                valid={this.state.firstNameValid}
+                message={this.state.errorMsg.firstName}
+              />
+            </div>
 
-          <div className="col-sm-3 my-1 " style={{ left: '280px' }}>
-            <ValidationMessage
-              valid={this.state.lastNameValid}
-              message={this.state.errorMsg.lastName}
-            />
-            <input
-              // style={inbox}
-              placeholder="Last Name"
-              type="text"
-              className="form-control"
-              value={this.state.lastName}
-              onChange={(e) => this.updateLastName(e.target.value)}
-              name="lastName"
-            />
+            <div className="col-sm-6 my-3">
+              <input
+                placeholder="Last Name"
+                type="text"
+                className="form-control"
+                value={this.state.lastName}
+                onChange={(e) => this.updateLastName(e.target.value)}
+                name="lastName"
+              />
+              <ValidationMessage
+                valid={this.state.lastNameValid}
+                message={this.state.errorMsg.lastName}
+              />
+            </div>
           </div>
-        </div>
-        <div className="form-row align-items-center">
-          <div className="col-sm-6 my-1 " style={{ left: '280px' }}>
-            <ValidationMessage
-              valid={this.state.emailValid}
-              message={this.state.errorMsg.email}
-            />
-            <input
-              // style={{
-              //   position: 'relative',
-              //   width: '210%',
-              //   borderRadius: '5px',
-              //   lineHeight: '40px',
-              // }}
-              placeholder="Email"
-              type="email"
-              className="form-control"
-              value={this.state.email}
-              onChange={(e) => this.updateEmail(e.target.value)}
-              name="email"
-            />
+          <div className="row">
+            <div className="col-sm-12 my-1 ">
+              <input
+                placeholder="Email"
+                type="email"
+                className="form-control"
+                value={this.state.email}
+                onChange={(e) => this.updateEmail(e.target.value)}
+                name="email"
+              />
+              <small id="emailHelp" className="form-text text-muted">
+                We'll never share your email with anyone else.
+              </small>
+              <p>{this.state.errorRegister}</p>
+              <ValidationMessage
+                valid={this.state.emailValid}
+                message={this.state.errorMsg.email}
+              />
+            </div>
           </div>
-        </div>
-        <div className="form-row align-items-center">
-          <div className="col-sm-6 my-1 " style={{ left: '280px' }}>
-            <ValidationMessage
-              valid={this.state.phoneValid}
-              message={this.state.errorMsg.phone}
-            />
-            <input
-              // style={{
-              //   position: 'relative',
-              //   display: 'flex',
-              //   width: '210%',
-              //   borderRadius: '5px',
-              //   lineHeight: '40px',
-              //   margin: '40px 0px',
-              // }}
-              minLength="10"
-              maxLength="10"
-              placeholder="Phone Number"
-              type="text"
-              className="form-control"
-              value={this.state.phone}
-              onChange={(e) => this.updatePhone(e.target.value)}
-              name="phone"
-            />
+          <div className="row">
+            <div className="col-sm-12 my-2">
+              <input
+                minLength="10"
+                maxLength="10"
+                placeholder="Phone Number"
+                type="text"
+                className="form-control"
+                value={this.state.phone}
+                onChange={(e) => this.updatePhone(e.target.value)}
+                name="phone"
+              />
+              <ValidationMessage
+                valid={this.state.phoneValid}
+                message={this.state.errorMsg.phone}
+              />
+            </div>
           </div>
-        </div>
-
-        <div className="form-row align-items-center">
-          <div className="col-sm-6 my-1 " style={{ left: '280px' }}>
-            <ValidationMessage
-              valid={this.state.passwordValid}
-              message={this.state.errorMsg.password}
-            />
-            <input
-              // style={inbox}
-              placeholder="Password"
-              type="password"
-              className="form-control"
-              value={this.state.password}
-              onChange={(e) => this.updatePassword(e.target.value)}
-              name="password"
-            />
+          <div className="row">
+            <div className="col-sm-12 my-3 ">
+              <input
+                // style={inbox}
+                placeholder="Password"
+                type="password"
+                className="form-control"
+                value={this.state.password}
+                onChange={(e) => this.updatePassword(e.target.value)}
+                name="password"
+              />
+              <ValidationMessage
+                valid={this.state.passwordValid}
+                message={this.state.errorMsg.password}
+              />
+            </div>
           </div>
-        </div>
-        <div className="form-row align-items-center">
-          <div className="col-sm-6 my-1 " style={{ left: '280px' }}>
-            <ValidationMessage
-              valid={this.state.repeatPasswordValid}
-              message={this.state.errorMsg.repeatPassword}
-            />
-            <input
-              // style={inbox}
-              placeholder="Password"
-              type="password"
-              className="form-control"
-              value={this.state.repeatPassword}
-              onChange={(e) => this.updateRepeatPassword(e.target.value)}
-              name="repeatPassword"
-            />
+          <div className="row">
+            <div className="col-sm-12 my-2">
+              <input
+                // style={inbox}
+                placeholder="Password"
+                type="password"
+                className="form-control"
+                value={this.state.repeatPassword}
+                onChange={(e) => this.updateRepeatPassword(e.target.value)}
+                name="repeatPassword"
+              />
+              <ValidationMessage
+                valid={this.state.repeatPasswordValid}
+                message={this.state.errorMsg.repeatPassword}
+              />
+            </div>
           </div>
-        </div>
-        <div className="form-row align-items-center">
-          <div className="col-sm-6 my-1" style={{ left: '280px' }}>
-            <button
-              // style={{
-              //   display: 'flex',
-              //   lineHeight: '30px',
-              //   justifyContent: 'center',
-              //   margin: '10px 0px',
-              //   width: '100px',
-              //   padding: '10px',
-              //   color: 'white',
-
-              //   backgroundColor: '#d7385e',
-              //   borderRadius: '5px',
-              // }}
-
-              type="submit"
-              className="btn btn-primary"
-              disabled={!this.state.formValid}
-              onClick={(e) => this.onFormSubmit(e)}
-            >
-              Submit
-            </button>
+          <div className="row">
+            <div className="col-sm-12 my-3">
+              <button
+                type="submit"
+                className="btn btn-primary"
+                disabled={!this.state.formValid}
+                onClick={(e) => this.onFormSubmit(e)}
+              >
+                Submit
+              </button>
+            </div>
           </div>
         </div>
       </div>

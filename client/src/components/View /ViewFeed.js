@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import moment from 'moment';
 // import generateData from '../generateData';
 import { Link } from 'react-router-dom';
 import Spinner from 'react-bootstrap/Spinner';
+import Star from '../Image/Star.png';
 import { Document, Page } from 'react-pdf';
 class ViewFeed extends Component {
   constructor(props) {
@@ -70,6 +72,7 @@ class ViewFeed extends Component {
   };
 
   render() {
+    console.log('Data', this.state.data);
     console.log('first', this.state.first);
     console.log('Second', this.state.second);
     console.log('Third', this.state.third);
@@ -77,27 +80,43 @@ class ViewFeed extends Component {
     let { data } = this.state;
 
     return (
-      <div className="container">
-        <h1 style={{ textAlign: 'center', padding: '50px 0px' }}> Feed View</h1>
-        <div className="row" style={{ color: 'grey' }}>
-          <div className="col">
-            <h2 style={{ textAlign: 'center' }}>Title</h2>
-          </div>
+      <div className="container-fluid">
+        <div
+          className="container-fluid shadow-lg p-3 mb-5 bg-white rounded border border-primary"
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginTop: '20px',
+          }}
+        >
+          <div className="row " style={{ color: 'grey', marginRight: '250px' }}>
+            <div className="col" style={{ left: '-160px' }}>
+              <h2>Name</h2>
+            </div>
+            <div className="col" style={{ left: '-170px' }}>
+              <h2>Time</h2>
+            </div>
 
-          <div className="col" style={{ textAlign: 'left' }}>
-            <h2>Description</h2>
-          </div>
-          <div className="col">
-            <h2 style={{ textAlign: 'left' }}>Link</h2>
-          </div>
-          <div className="col">
-            <h2 style={{ textAlign: 'left' }}>Document</h2>
+            <div className="col" style={{ right: '80px' }}>
+              <h2>Title</h2>
+            </div>
+            <div className="col" style={{ left: '125px' }}>
+              <h2>Description</h2>
+            </div>
+
+            <div className="col" style={{ left: '350px' }}>
+              <h2>Link</h2>
+            </div>
+
+            <div className="col" style={{ left: '360px' }}>
+              <h2> Document</h2>
+            </div>
           </div>
         </div>
         <hr></hr>
         {data.map((data, i) => (
           <div
-            className="row"
+            className="row  shadow-lg p-3 mb-5 bg-white rounded border border-info"
             style={{
               boxShadow: '2px 2px 2px 2px grey',
               borderRadius: '20px',
@@ -114,23 +133,30 @@ class ViewFeed extends Component {
                   },
                 }}
               >
-                {data.contributer.firstName} {data.contributer.lastName}
+                {data.contributer.firstName.toUpperCase()}{' '}
+                {data.contributer.lastName.toUpperCase()}
               </Link>
-              <p>{this.state.rating[i]}</p>
-            </div>
-            <div className="col-2">{data.title}</div>
-            <div className="col-3">{data.description}</div>
+              <img style={{ height: '30px' }} src={Star} alt="Rating" />
 
-            <div className="col-3" style={{ right: '20px' }}>
+              <p>{parseFloat(this.state.rating[i]).toFixed(1)}/5</p>
+            </div>
+            <div className="col-1">
+              {' '}
+              {moment(data.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
+            </div>
+            <div className="col-3">{data.title}</div>
+            &nbsp; &nbsp;
+            <div className="col-4">{data.description}</div>
+            &nbsp; &nbsp;
+            <div className="col-1" style={{ right: '20px' }}>
               <a href={data.link} target="blank">
-                {data.link}
+                Source-Link
               </a>
             </div>
-
-            <div className="col-2">
-              <Document file={data.location} />
+            &nbsp; &nbsp;
+            <div className="col">
               <a href={data.location} target="blank">
-                {data.location}
+                View Document
               </a>
             </div>
           </div>

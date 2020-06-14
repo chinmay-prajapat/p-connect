@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import myImage from '../Image/try3.jpeg';
 
 const user = {
   backgroundColor: '#4d4c7d',
@@ -9,39 +10,72 @@ const user = {
   float: 'center',
   width: '20px',
   margin: '250px 0px 0px 300px',
-
   padding: '30px 0px',
-
   borderRadius: '10px',
 };
 
 class Login extends Component {
   render() {
     return (
-      <div
-        className="container row no-gutters"
+      <body
         style={{
-          display: 'flex',
-          justifyContent: 'center',
+          backgroundImage: `url(${myImage})`,
+          backgroundColor: 'black',
+          backgroundSize: 'cover',
+          padding: '45px',
         }}
       >
-        <div className="col-sm" style={user}>
-          <Link style={{ display: 'flex', color: 'white' }} to="/ulogin">
-            User Login
-          </Link>
-        </div>
-
-        <div className="col-sm" style={user}>
-          <Link
+        <div className="container">
+          <div className="row ">
+            <div className="col" style={{ top: '30px' }}>
+              <h1
+                style={{
+                  textAlign: 'center',
+                  fontSize: '60px',
+                  padding: '5px',
+                  fontWeight: 'bold',
+                  color: 'black',
+                }}
+              >
+                Login
+              </h1>
+            </div>
+          </div>
+          <div
+            className="row"
             style={{
-              color: 'white',
+              textAlign: 'center',
+              margin: '250px  ',
+
+              fontSize: '27px',
             }}
-            to="/plogin"
           >
-            Professional Login
-          </Link>
+            <div className="col">
+              <Link
+                style={{
+                  fontWeight: 'bold',
+
+                  color: 'white',
+                }}
+                className="btn btn-dark"
+                to="/ulogin"
+              >
+                User
+              </Link>
+            </div>
+
+            <div className="col">
+              <Link
+                style={{ fontWeight: 'bold' }}
+                className="btn btn-dark"
+                to="/plogin"
+              >
+                Professional
+              </Link>
+            </div>
+          </div>
         </div>
-      </div>
+      </body>
     );
   }
 }

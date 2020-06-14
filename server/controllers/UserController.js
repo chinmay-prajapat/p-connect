@@ -106,23 +106,34 @@ router.post('/img/:id', uploadImg.fields([{ name: 'img' }]), function (
     });
 });
 router.post('/register', function (req, res) {
-  let body = req.body;
-  const user = new User(body);
-  user
-    .save()
-    .then(function (user) {
-      res.send(user);
-    })
-    .catch(function (err) {
-      console.log(err);
-      res.send(err);
-    });
+  const body = req.body;
+  // const user = new User(body);
+  User.findOne({ email: body.email }).then((user) => {
+    if (!user) {
+      user
+        .save()
+        .then(function (user) {
+          res.send(user).status(200);
+        })
+        .catch(function (err) {
+          console.log(err);
+          res.send(err);
+        });
+    } else {
+      res.send('Already exist!!').catch(function (err) {
+        console.log(err);
+        res.send(err);
+      });
+    }
+  });
 });
 
 router.get('/display/invites/:userId', function (req, res) {
   // console.log(req.params.userId);
   User.findById(req.params.userId)
+
     .populate('event')
+
     .then((user) => {
       // console.log(user.event);
       res.send(user.event);
@@ -142,6 +153,7 @@ router.get('/display/comment/:userId', function (req, res) {
 router.get('/display1/message/:userId', function (req, res) {
   console.log(req.params.userId);
   User.findById(req.params.userId)
+    .sort({ createdAt: -1 })
     .populate('message')
     .then((user) => {
       console.log(user);
@@ -179,7 +191,10 @@ router.post('/login', authenticateAccess, authenticateSubscription, function (
 });
 
 router.get('/account', function (req, res) {
-  User.find({}).then((users) => res.send(users));
+  User.find({})
+    .sort({ createdAt: -1 })
+    .populate('rating')
+    .then((users) => res.send(users));
 });
 
 router.get('/account/:id', function (req, res) {
@@ -367,8 +382,9 @@ router.post('/confirm', function (req, res) {
   var message = `<p style='font-weight:bold;'> ${req.body.firstName} ${req.body.lastName},</p>
   <p>Thank you for joining us </p>
   <h4 style='font-weight:bold;'>We are glad to inform you that your account has been verified successfully and now on you can access your account.</h4>
-<p>We urge you to keep updating your experience with us to get suitable perk.</p>
-<p>If there is anything apart from academia or work, please share it from about section.</p>
+<p>We highly recommend you to please update your profile to get requests for the session. And we also urge you to keep sharing knowledge or anything which enhance our user's knowledge. Keep answering user's queries, get a good rating as well as good feedback so you would be noted by other users too. 
+Finally, we glad to have you on the board.</p>
+<p>If there is anything apart from academia or work, please share it from our <b>About</b> section.</p>
   <p style='font-weight:bold;'>Thanks and Regards,</p>
   <p style='font-weight:bold;'>P-Connect</p>
   
@@ -439,12 +455,19 @@ router.post('/acceptMail', function (req, res) {
       pass: process.env.PASSWORD,
     },
   });
+  var message = `<p style='font-weight:bold;'> ${req.body.firstName} ${req.body.lastName},</p>
+  <p>has accepted your request. We request you to please contact to professional before the session for the arrangments.</p>
+  <h3 style='font-weight:bold;'>These are the contact details:-</h3>
 
+  <p>${req.body.email}</p>
+  <p style='font-weight:bold;'>Thanks and Regards,</p>
+  <p style='font-weight:bold;'>P-Connect</p>
+  `;
   let mailOptions = {
     from: 'prajapatchinmay999@gmail.com',
     to: req.body.email,
-    subject: 'Your proposal',
-    text: `${req.body.firstName} ${req.body.lastName} have accepted your request`,
+    subject: 'Your request has been approved by our professional',
+    html: message,
   };
   transporter
     .sendMail(mailOptions)
@@ -466,12 +489,17 @@ router.post('/rejectMail', function (req, res) {
       pass: process.env.PASSWORD,
     },
   });
-
+  var message = `<p style='font-weight:bold;'> ${req.body.firstName} ${req.body.lastName}, has rejected your request.</p>
+  <p>
+  We still recommend to choose other professional or wait and try after sometime</p>
+  <p style='font-weight:bold;'>Thanks and Regards,</p>
+  <p style='font-weight:bold;'>P-Connect</p>
+  `;
   let mailOptions = {
     from: 'prajapatchinmay999@gmail.com',
     to: req.body.email,
-    subject: 'Your proposal',
-    text: `${req.body.firstName} ${req.body.lastName} have rejected your request`,
+    subject: 'Your Request has been rejected by the professional',
+    html: message,
   };
   transporter
     .sendMail(mailOptions)

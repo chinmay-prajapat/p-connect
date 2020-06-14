@@ -38,6 +38,8 @@ class ProfessionalLogin extends React.Component {
         const tokenData = decode(response.data.token);
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('role', tokenData.roles);
+        if (tokenData.amountPaid != undefined)
+          localStorage.setItem('amountPaid', tokenData.amountPaid);
         // redirect to contacts page
         this.props.history.push('/userheader');
 
@@ -56,7 +58,6 @@ class ProfessionalLogin extends React.Component {
 
   render() {
     const container = {
-      background: '#679b9b',
       width: '500px',
       margin: '90px 0px 0px 320px',
       color: 'white',
@@ -72,12 +73,22 @@ class ProfessionalLogin extends React.Component {
 
     return (
       <div className="container">
-        <h1 style={{ textAlign: 'center', margin: '35px 0px' }}>
-          Professional Login
-        </h1>
-        <div style={container}>
+        <div
+          style={container}
+          className="border border-primary shadow-lg p-3 mb-5 bg-white rounded"
+        >
           <div className="ui equal width grid">
             <div className="row">
+              <h1
+                style={{
+                  textAlign: 'center',
+                  margin: '10px ',
+                  color: 'black',
+                  fontWeight: 'bold',
+                }}
+              >
+                Professional Login
+              </h1>
               <div className="column">
                 <div
                   style={{ fontWeight: 'bold', textAlign: 'center' }}
@@ -95,7 +106,6 @@ class ProfessionalLogin extends React.Component {
                           lineHeight: '40px',
                           width: '350px',
                           margin: '25px',
-                          borderRadius: '5px',
                         }}
                         placeholder="Email"
                         type="text"
@@ -119,31 +129,39 @@ class ProfessionalLogin extends React.Component {
                         name="password"
                       />
                     </div>
-
-                    <button
-                      style={{
-                        display: 'flex',
-                        lineHeight: '30px',
-                        justifyContent: 'center',
-                        margin: '25px',
-                        width: '100px',
-                        padding: '10px',
-                        color: 'white',
-
-                        backgroundColor: '#000839',
-                        borderRadius: '5px',
-                      }}
-                      type="submit"
-                      className="ui button"
-                      onClick={this.onFormSubmit}
-                    >
-                      Login
-                    </button>
+                    <div style={{ color: 'red' }}>{this.state.errors}</div>
+                    <div className="row">
+                      <div
+                        className="col"
+                        style={{ textAlign: 'center', padding: '10px' }}
+                      >
+                        <button
+                          type="submit"
+                          className="btn btn-primary"
+                          onClick={this.onFormSubmit}
+                        >
+                          Login
+                        </button>
+                      </div>
+                    </div>
                   </form>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+        <div className="danger">
+          <p
+            style={{
+              color: 'red',
+              backgroundColor: '#ffdddd',
+              borderLeft: '6px solid #f44336',
+            }}
+          >
+            <strong> NOTE:-</strong> If you have not got the confirmation email
+            from our side then you need to wait till verification. In that case,
+            you will not be able to login your account.
+          </p>
         </div>
       </div>
     );

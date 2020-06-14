@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
+
 import { Link } from 'react-router-dom';
 //import React, { Component } from 'react';
 
@@ -8,8 +10,20 @@ const myStyle = {
 class Terms extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isChecked: false,
+    };
   }
-
+  toggleChange = () => {
+    this.setState({
+      isChecked: !this.state.isChecked,
+    });
+  };
+  onFormSubmit = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    this.props.history.push('/pregister');
+  };
   render() {
     return (
       <div className="container">
@@ -23,6 +37,7 @@ class Terms extends Component {
         >
           Terms & Conditions
         </h1>
+
         <div className="row">
           <div className="col">
             <p style={myStyle}>
@@ -61,9 +76,11 @@ class Terms extends Component {
               charges are levied.
             </p>
             <p>
-              7. The organization will levied 10% of every service given through
-              the profession or lecture or workshop by the invite.
+              7. To get monetary benefits or invites you must need to be active
+              on the platform by sharing feeds and answering the question being
+              asked by other users.
             </p>
+
             <p>
               8. Any abnormality must be reported the organization through about
               page.
@@ -83,53 +100,45 @@ class Terms extends Component {
               will be taken.
             </p>
             <p>
-              13. For any further query you please contact through about page
+              13. You are free to accept or reject your invites, there will not
+              be any interest by us.
             </p>
+            <p>*For any further query you please contact through about page</p>
           </div>
         </div>
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            value=""
-            id="defaultCheck1"
-            required
-          />
-          <label class="form-check-label" for="defaultCheck1">
-            I have read and understood the terms and conditions and pledge to
-            practice them.
-          </label>
-        </div>
-        <div>
-          {/* <Link to="/uregister"
-          <button
-            style={{
-              margin: '20px 0px',
-              display: 'block',
-              textAlign: 'center',
-              position: 'relative',
-              left: '500px',
-            }}
-            type="button"
-            onclick="/uregister"
-            class="btn btn-info"
-            onclick={this.routeChange}
-          >
-            Next
+        <form onSubmit={(e) => this.onFormSubmit(e)}>
+          <div className="form-check">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              id="defaultCheck1"
+              required
+            />
+            <label className="form-check-label" htmlFor="defaultCheck1">
+              I have read and understood the terms and conditions and pledge to
+              practice them.
+            </label>
+          </div>
+          <div>
+            <button className="btn btn-info" type="submit" name="submit">
+              Next
+            </button>
 
-          </button> */}
-          <Link
-            style={{
-              margin: '20px 0px',
+            {/* <Link
+              style={{
+                margin: '20px 0px',
 
-              textAlign: 'center',
-            }}
-            to="/pregister"
-            className="btn btn-info"
-          >
-            Next
-          </Link>
-        </div>
+                textAlign: 'center',
+              }}
+              to="/pregister"
+              type="submit"
+              name="submit"
+              className="btn btn-info"
+            >
+              Next
+            </Link> */}
+          </div>
+        </form>
       </div>
     );
   }

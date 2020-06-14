@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 // import generateData from '../generateData';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 
 class Subscriber extends Component {
   constructor(props) {
@@ -33,7 +34,9 @@ class Subscriber extends Component {
       .then((response) => {
         this.setState({
           // records: response.data,
-          records: response.data.filter((role) => role.roles === 'user'),
+          records: response.data.filter(
+            (role) => role.roles === 'user' && role.amount !== 0
+          ),
         });
       })
       .catch((err) => {
@@ -65,31 +68,18 @@ class Subscriber extends Component {
 
     let { records, isShowingAlert } = this.state;
     return (
-      <div className="container">
-        {/* <div>
-          <select
-            name="sortStream"
-            value={this.state.sortStream}
-            onChange={this.setSearch}
-          >
-            <option key="1" value=" "></option>
-            {sortStream}
-          </select>
-        </div> */}
-        <div className="header" align="center">
-          <h1
-            style={{
-              textAlign: 'center',
-              color: ' rgb(51, 122, 183)',
-              fontWeight: 'bold',
-              padding: '20px',
-            }}
-          >
-            Subscriber View
-          </h1>
+      <div className="container-fluid">
+        <div
+          className="container  "
+          style={{ textAlign: 'center', width: '300px', padding: '20px' }}
+        >
+          <div className=" shadow-lg p-3 mb-5 bg-white rounded border border-primary">
+            <h1 style={{ fontWeight: 'bold' }}>Subscriber</h1>
+          </div>
         </div>
-        <div className=" content table-responsive table-full-width p-0 m-0">
-          <table className="table table-hover table-striped p-0 m-0">
+
+        <div className=" table-responsive table-full-width p-0 m-0 ">
+          <table className="table table-hover table-striped p-0 m-0 shadow-lg p-3 mb-5 bg-white rounded border border-primary">
             <thead>
               <tr>
                 <th>First Name</th>
@@ -97,6 +87,8 @@ class Subscriber extends Component {
                 <th>Mobile</th>
 
                 <th>Email Id</th>
+                <th>Amount</th>
+                <th>Date</th>
                 <th>Action</th>
 
                 {/* <th
@@ -128,17 +120,20 @@ class Subscriber extends Component {
                     <td>{record.phone}</td>
                     <td>{record.email}</td>
                     <td>{record.amount}</td>
-                    <button>
+                    <td style={{ color: '#79d70f' }}>
+                      {moment(record.createdAt).format('MMM Do YY')}
+                    </td>
+                    <td>
                       <Link
+                        className="btn btn-danger"
                         to={{
                           pathname: `/edit/${record._id}`,
                           state: { record },
                         }}
-                        style={{ color: '#0000ff', fontSize: '15px' }}
                       >
                         Edit
                       </Link>
-                    </button>
+                    </td>
                   </tr>
                 ))}
             </tbody>

@@ -22,12 +22,25 @@ router.post('/register', function (req, res) {
 
 router.get('/', function (req, res) {
   Event.find()
+    .sort({ createdAt: -1 })
     .then(function (events) {
       res.send(events);
     })
 
     .catch(function (err) {
       res.send(err);
+    });
+});
+router.get('/myinvite/:userId', function (req, res) {
+  console.log(req.params.userId);
+
+  Event.find({ mentorId: req.params.userId })
+    .sort({ createdAt: -1 })
+    .then((event) => {
+      // console.log(user.event);
+
+      console.log(event);
+      res.send(event);
     });
 });
 router.put('/accept', function (req, res) {

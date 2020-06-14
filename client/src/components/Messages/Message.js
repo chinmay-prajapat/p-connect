@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import axios from 'axios';
 // import generateData from '../generateData';
 import decode from 'jwt-decode';
@@ -10,6 +11,7 @@ class Message extends Component {
     this.state = {
       data: [],
       delete: 0,
+      myData: [],
     };
   }
   //   deleteItem = (itemId) => {
@@ -59,83 +61,117 @@ class Message extends Component {
       .catch((err) => {
         console.log(err);
       });
+    axios
+      .get(`http://localhost:5000/api/message/myquery/${id}`)
+      .then((res1) => {
+        console.log('Sender', res1.data);
+        this.setState({
+          myData: res1.data,
+        });
+        console.log('My Data', this.state.myData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     console.log(id);
   }
 
   render() {
     // const { data } = this.state;
 
-    let { data, isShowingAlert } = this.state;
+    let { data, myData, isShowingAlert } = this.state;
     return (
-      <div className="container">
-        <h1 style={{ textAlign: 'center', padding: '50px 0px' }}>Q&A</h1>
-        <table className="table table-striped table-dark">
-          <thead>
-            <tr>
-              <th></th>
-              <th scope="col">First Name</th>
-              <th scope="col">Last Name</th>
-              <th scope="col">Title</th>
-              <th scope="col">Description</th>
-            </tr>
-          </thead>
-
-          {data.map((data, i) => (
-            <tbody>
-              <tr key={i}>
-                <th scope="row"></th>
-
-                <td>{data.firstName}</td>
-                <td>{data.lastName}</td>
-                <td>{data.question}</td>
-                <td>{data.description}</td>
-
-                <td>
-                  <Link
-                    to={{
-                      pathname: `/reply/${data._id}`,
-                      state: {
-                        data,
-                      },
-                    }}
-                  >
-                    Reply
-                  </Link>
-                </td>
-              </tr>
-            </tbody>
-          ))}
-        </table>
-        {/* <div className="row" style={{ color: 'grey' }}>
-          <div className="col">
-            <h2>First Name</h2>
-          </div>
-          <div className="col">
-            <h2>Last Name</h2>
-          </div>
-          <div className="col">
-            <h2>Topic</h2>
-          </div>
-          <div className="col">
-            <h2>Description</h2>
+      <div className="container-fluid">
+        <div
+          className="container "
+          style={{ textAlign: 'center', width: '300px', padding: '30px' }}
+        >
+          <div className=" shadow-lg p-3 mb-5 bg-white rounded border border-primary">
+            <h1 style={{ fontWeight: 'bold' }}>Q&A</h1>
           </div>
         </div>
-        <hr></hr>
-        {data.map((data) => (
-          <div className="row">
-            <div className="col">{data.firstName.toUpperCase()}</div>
-
-            <div className="col">{data.lastName}</div>
-
-            <div
-              style={{ textAlign: 'justify', textJustify: 'inter-word' }}
-              className="col"
+        <div
+          className="row"
+          style={{ width: '100%', height: '500px', overflow: 'scroll' }}
+        >
+          <div className="col-4" style={{ paddingRight: '0px' }}>
+            <table
+              className=" table table-striped table-primary shadow-lg p-3 mb-5 rounded"
+              style={{ padding: '0px', margin: '0px' }}
             >
-              {data.topic}
-            </div>
+              <thead>
+                <tr className="table-info">
+                  <th></th>
+                  <th scope="col"> By Me</th>
+                  <th scope="col"> Description</th>
+                  <th scope="col">Time</th>
+                </tr>
+              </thead>
+              {myData.map((myData) => (
+                <tbody>
+                  <tr>
+                    <th></th>
+                    <td style={{ height: '146px' }}>{myData.question}</td>
+                    <td>{myData.description}</td>
+                    <td>
+                      {' '}
+                      {moment(data.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
+                    </td>
+                  </tr>
+                </tbody>
+              ))}
+            </table>
+          </div>
+          <div className="col" style={{ paddingLeft: '0px' }}>
+            <table
+              className="table table-striped table-dark  shadow-lg p-3 mb-5 rounded"
+              style={{ padding: '0px', margin: '0px' }}
+            >
+              <thead>
+                <tr>
+                  <th></th>
+                  <th scope="col">Name</th>
 
-            <div className="col">{data.description}</div>
-          </div> */}
+                  <th scope="col">Time</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Description</th>
+                </tr>
+              </thead>
+
+              {data.map((data, i) => (
+                <tbody>
+                  <tr key={i}>
+                    <th scope="row"></th>
+
+                    <td>
+                      {data.firstName}
+                      &nbsp;&nbsp;{data.lastName}
+                    </td>
+                    <td style={{ width: '5px' }}>
+                      {' '}
+                      {moment(data.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
+                    </td>
+                    <td>{data.question}</td>
+                    <td>{data.description}</td>
+
+                    <td>
+                      <Link
+                        to={{
+                          pathname: `/reply/${data._id}`,
+                          state: {
+                            data,
+                          },
+                        }}
+                      >
+                        Reply
+                      </Link>
+                    </td>
+                  </tr>
+                </tbody>
+              ))}
+            </table>
+          </div>
+        </div>
       </div>
     );
   }

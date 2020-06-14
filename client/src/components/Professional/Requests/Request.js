@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import nodemailer from 'nodemailer';
+import moment from 'moment';
 // import generateData from '../generateData';
 import decode from 'jwt-decode';
 import { Link } from 'react-router-dom';
@@ -142,92 +143,105 @@ class myRequest extends Component {
     let { data, isShowingAlert } = this.state;
     return (
       <div className="container-fluid">
-        <h1
-          style={{
-            textAlign: 'center',
-            padding: '50px 0px',
-            fontWeight: 'bold',
-          }}
+        <div
+          className="container "
+          style={{ textAlign: 'center', width: '300px' }}
         >
-          Invite View
-        </h1>
-        <table className="table table-striped table-dark">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">First</th>
-              <th scope="col">Last</th>
-              <th scope="col">Topic</th>
-              <th scope="col">Description</th>
-              <th scope="col">Place</th>
-              <th scope="col">Hour</th>
-              <th scope="col">Phone</th>
-              <th scope="col">Email</th>
-              <th scope="col">Status</th>
-            </tr>
-          </thead>
+          <div
+            className=" shadow-lg p-3 mb-5 bg-white rounded border border-primary"
+            style={{ margin: '23px 0px' }}
+          >
+            <h1 style={{ fontWeight: 'bold' }}>Requests</h1>
+          </div>
+        </div>
+        <div style={{ fontSize: '12px' }}>
+          <table className="table table-striped table-dark shadow-lg p-3 mb-5 rounded">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">Name</th>
 
-          {data.map((data, index) => (
-            <tbody>
-              <tr key={index}>
-                <th scope="row"></th>
-                <td>{data.firstName}</td>
-                <td>{data.lastName}</td>
-                <td>{data.topic}</td>
-                <td>{data.description}</td>
-                <td>{data.place}</td>
-                <td>{data.hour}</td>
-                <td>{data.phone}</td>
-                <td>{data.email}</td>
-                <td
-                  style={{
-                    color: data.message === 'Accepted' ? 'green' : 'red',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  {data.message}
-                </td>
-
-                <td>
-                  <button
-                    className="btn btn-success"
-                    disabled={data.acceptButton}
-                    onClick={() =>
-                      this.acceptEmail(
-                        data.email,
-
-                        this.state.record.firstName,
-                        this.state.record.lastName,
-                        data._id,
-                        index
-                      )
-                    }
-                  >
-                    Accept
-                  </button>
-                </td>
-                <td>
-                  <button
-                    className="btn btn-danger"
-                    disabled={data.rejectButton}
-                    onClick={() =>
-                      this.rejectEmail(
-                        data.email,
-                        this.state.record.firstName,
-                        this.state.record.lastName,
-                        data._id,
-                        index
-                      )
-                    }
-                  >
-                    Reject
-                  </button>
-                </td>
+                <th scope="col">Topic</th>
+                <th scope="col">Description</th>
+                <th scope="col">Place</th>
+                <th scope="col">Hour</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Email</th>
+                <th scope="col">Date</th>
+                <th scope="col">Status</th>
               </tr>
-            </tbody>
-          ))}
-        </table>
-        {/* <div className="row" style={{ color: 'grey' }}>
+            </thead>
+
+            {data.map((data, index) => (
+              <tbody>
+                <tr key={index}>
+                  <th scope="row"></th>
+                  <td>
+                    {data.firstName.toUpperCase()}&nbsp;
+                    {data.lastName.toUpperCase()}
+                  </td>
+                  <td>{data.topic}</td>
+                  <td style={{ height: '100px', width: '300px' }}>
+                    {data.description}
+                  </td>
+                  <td>{data.place.toUpperCase()}</td>
+                  <td>{data.hour}</td>
+                  <td>{data.phone}</td>
+
+                  <td>{data.email}</td>
+                  <td style={{ fontWeight: 'bold', color: '#79d70f' }}>
+                    {moment(data.date).format('MMM Do YY')}
+                  </td>
+
+                  <td
+                    style={{
+                      color: data.message === 'Accepted' ? 'green' : 'red',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    {data.message}
+                  </td>
+
+                  <td>
+                    <button
+                      className="btn btn-success"
+                      disabled={data.acceptButton}
+                      onClick={() =>
+                        this.acceptEmail(
+                          data.email,
+
+                          this.state.record.firstName,
+                          this.state.record.lastName,
+                          data._id,
+                          index
+                        )
+                      }
+                    >
+                      Accept
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      className="btn btn-danger"
+                      disabled={data.rejectButton}
+                      onClick={() =>
+                        this.rejectEmail(
+                          data.email,
+                          this.state.record.firstName,
+                          this.state.record.lastName,
+                          data._id,
+                          index
+                        )
+                      }
+                    >
+                      Reject
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            ))}
+          </table>
+          {/* <div className="row" style={{ color: 'grey' }}>
           <div className="col">
             <h2>First Name</h2>
           </div>
@@ -257,6 +271,7 @@ class myRequest extends Component {
 
             <div className="col">{data.description}</div>
           </div> */}
+        </div>
       </div>
     );
   }

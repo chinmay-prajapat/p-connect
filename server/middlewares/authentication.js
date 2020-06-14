@@ -25,7 +25,7 @@ const authenticateAccess = function (req, res, next) {
       }
     })
     .catch(function (err) {
-      res.status('403').send(err);
+      res.send({ errors: 'Invalid email / password !' });
     });
 };
 

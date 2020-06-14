@@ -64,7 +64,7 @@ export default class UserProfile extends Component {
   render() {
     let { data } = this.state;
     return (
-      <div>
+      <div className="container-fluid">
         <div className="row">
           <div
             className="col"
@@ -73,7 +73,7 @@ export default class UserProfile extends Component {
               fontWeight: 'bold',
               fontSize: '40px',
               marginTop: '350px',
-              padding: '10px',
+              // padding: '10px',
             }}
           >
             {/* <input

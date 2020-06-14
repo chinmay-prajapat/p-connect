@@ -4,14 +4,18 @@ import Home from './Home/Home';
 import Invite from './Invite/Invite';
 import myProfile from './MyProfile/myProfile';
 import Register from './Register';
+import InviteProfile from './Invite/InviteProfile';
 import New from './Professional/Contribute/New';
 import Old from './Professional/Contribute/Old';
 import ProfessionalHome from './Professional/Home/index';
 import UserRegister from './Register/UserRegister';
+import UserTerm from './Register/UserTerm';
 import UserLogin from './LogIn/UserLogin';
 import ProfessionalLogin from './LogIn/ProfessionalLogin';
 import ProfessionalRegister from './Register/ProfessionalRegister';
 import Header from './Header/index';
+import Allowed from './Admin/ProfileRequest/Allowed';
+import getOwnFeed from './Professional/OwnFeed/getOwnFeed';
 import Comment from './Comment/Comment';
 import AdminMessage from './Admin/AdminMessage/index';
 import AdminHeader from './Admin/AdminHeader/index';
@@ -23,28 +27,32 @@ import Login from './LogIn';
 import HighRated from './HighRated/HighRated';
 import PEvent from './EEvent';
 import UserProfile from './Users/UserProfiles/index';
-import Follower from './Professional/Followers/index';
+import AdminLogin from './Admin/AdminLogin/AdminLogin';
 import Ask from './Messages/Ask';
+import InviteTerm from './Invite/InviteTerm';
 import viewProfile from './View /viewProfile';
 import Message from './Messages/Message';
 import Request from './Professional/Requests/index';
 import UserMentor from './Users/Mentor/index';
 import updateProfile from './MyProfile/updateProfile';
 import ProfileUser from './MyProfile/ProfileUser';
-import Follow from './Users/Follow/index';
+import inviteForm from './Invite/InviteForm';
 import Reply from './Messages/Reply';
 import checkSubscription from './LogIn/checkSubscription';
 import ProfileRequest from './Admin/ProfileRequest/ProfileRequest';
-// import ProfessionalProfile from './Professional/ProfessionalProfiles/index';
+import N_Subscriber from './Admin/Subscriber/N_Subscriber';
 import Transcation from './Admin/Transcation/index';
 import Subscriber from './Admin/Subscriber/Subscriber';
 import Pay from './Stripe/Stripe';
 import HighRate from './HighRated/HighRate';
 import ViewFeed from './View /ViewFeed';
 import LogOut from './LogOut/LogOut';
+import Invites from './Admin/Invites/Invite';
+import Session from './Admin/Session/Sessions';
 import Terms from './Register/Terms';
 import StarRating from './Users/UserProfiles/Rating';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { FaTumblrSquare } from 'react-icons/fa';
 
 class App extends Component {
   constructor(props) {
@@ -95,24 +103,39 @@ class App extends Component {
               component={viewProfile}
             />
             <Route exact={true} path="/highrated" component={HighRated} />
+
             <Route exact={true} path="/highrate/:id" component={HighRate} />
+            <Route exact={true} path="/invite" component={Invite} />
+            <Route
+              exact={true}
+              path="/inviteprofile/:id"
+              component={InviteProfile}
+            />
+            <Route exact={true} path="/session" component={Session} />
+            <Route exact={true} path="/allowed" component={Allowed} />
             <Route exact={true} path="/pay" component={Pay} />
             <Route exact={true} path="/img" component={Img} />
+            <Route exact={true} path="/inviteform/:id" component={inviteForm} />
             <Route exact={true} path="/comment" component={Comment} />
             <Route exact={true} path="/term" component={Terms} />
             <Route exact={true} path="/reply/:id" component={Reply} />
             <Route exact={true} path="/myProfile" component={myProfile} />
+            <Route exact={true} path="/inviteterm" component={InviteTerm} />
+            <Route exact={true} path="/userterm" component={UserTerm} />
             <Route exact={true} path="/feed" component={ViewFeed} />
             <Route exact={true} path="/adminMessage" component={AdminMessage} />
             <Route exact={true} path="/subscriber" component={Subscriber} />
             <Route exact={true} path="/" component={Home} />
+            <Route exact={true} path="/myinvite/:id" component={Invites} />
+            <Route exact={true} path="/nsubscriber" component={N_Subscriber} />
+            <Route exact={true} path="/getownfeed/:id" component={getOwnFeed} />
             <Route exact={true} path="/register" component={Register} />
             <Route
               exact={true}
               path="/profileuser/:id"
               component={ProfileUser}
             />
-            <Route exact={true} path="/follow" component={Follow} />
+
             <Route exact={true} path="/uregister" component={UserRegister} />
             <Route exact={true} path="/transcation" component={Transcation} />
             <Route exact={true} path="/rating/:id" component={StarRating} />
@@ -150,11 +173,7 @@ class App extends Component {
               component={ProfessionalProfile}
             /> */}
             <Route exact={true} path="/contribute" component={Contribute} />
-            <Route
-              exact={true}
-              path="/professionalfollower"
-              component={Follower}
-            />
+
             <Route
               exact={true}
               path="/professionalhome"
@@ -198,9 +217,21 @@ class App extends Component {
               path="/pregister"
               component={ProfessionalRegister}
             />
-            <Route exact={true} path="/invite" component={Invite} />
+
             <Route exact={true} path="/login" component={Login} />
             <Route exact={true} path="/edit/:id" component={Edit} />
+            <Route
+              exact={true}
+              path="/adminlogin"
+              render={(props) => {
+                return (
+                  <AdminLogin
+                    {...props}
+                    onAuthentication={this.onAuthentication}
+                  />
+                );
+              }}
+            />
             <Route
               path="/ulogin"
               render={(props) => {

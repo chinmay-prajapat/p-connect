@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import moment from 'moment';
 // import generateData from '../generateData';
 import { Link } from 'react-router-dom';
 
@@ -43,84 +44,40 @@ class AdminMessage extends Component {
 
     let { data, isShowingAlert } = this.state;
     return (
-      <div className="card">
-        <div className="header" align="center">
-          <h1
-            style={{
-              textAlign: 'center',
-              color: ' rgb(51, 122, 183)',
-              fontWeight: 'bold',
-            }}
-          >
-            Query View
-          </h1>
-        </div>
-        <div className="content table-responsive table-full-width">
-          <table className="table table-hover table-striped">
+      <div className="container-fluid">
+        <div
+          className="container "
+          style={{ textAlign: 'center', width: '300px', padding: '20px' }}
+        >
+          <div className=" shadow-lg p-3 mb-5 bg-white rounded border border-primary">
+            <h1 style={{ fontWeight: 'bold' }}>Query</h1>
+          </div>
+        </div>{' '}
+        <div className=" content table-responsive table-full-width p-0 m-0 ">
+          <table className="table table-hover table-striped table-dark p-0 m-0 shadow-lg p-3 mb-5  rounded border border-danger">
             <thead>
               <tr>
-                <th
-                  style={{
-                    display: 'table-cell',
-                    verticalAlign: 'inherit',
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    width: '150px',
-                  }}
-                >
-                  First Name
-                </th>
-                <th style={{ width: '150px' }}>Last Name</th>
+                <th> Name</th>
+
                 <th>Email</th>
 
-                {/* <th
-                  className="text-right"
-                  data-checkbox="true"
-                  data-search="true"
-                >
-                  Salary
-                </th> */}
-
                 <th>Message</th>
+                <th>Date</th>
               </tr>
             </thead>
             <tbody>
               {data.map((data) => (
                 <tr>
-                  <td style={{}}>{data.firstName.toUpperCase()}</td>
-                  <td>{data.lastName.toUpperCase()}</td>
                   <td>
-                    {' '}
+                    {data.firstName.toUpperCase()}&nbsp;&nbsp;
+                    {data.lastName.toUpperCase()}
+                  </td>
+                  <td>
                     <a href={`mailto:${data.email}`}>{data.email}</a>
                   </td>
                   <td>{data.message}</td>
-
-                  {/* <td className="text-right">$ {data.salary}</td>
-                  <td>
-                    <button>
-                      <Link
-                        to={{
-                          pathname: `/MyCustom/${data._id}`,
-                          state: { data },
-                        }}
-                        style={{ color: '#0000ff', fontSize: '15px' }}
-                      >
-                        Edit
-                      </Link>
-
-                      <i className="fa fa-remove"></i>
-                    </button>
-                  </td> */}
-                  <td>
-                    <button
-                      // rel="tooltip"
-                      // className="btn btn-info btn-simple btn-xs"
-                      data-original-title="View Profile"
-                      onClick={() => this.deleteItem(data._id)}
-                      style={{ color: 'red', fontSize: '15px' }}
-                    >
-                      Delete
-                    </button>
+                  <td style={{ color: '#79d70f' }}>
+                    {moment(data.date).format('MMM Do YY, h:mm:ss a')}
                   </td>
                 </tr>
               ))}

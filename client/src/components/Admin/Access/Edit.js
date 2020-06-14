@@ -127,149 +127,154 @@ class Edit extends React.Component {
       justifyContent: 'center',
     };
     return (
-      <div style={container}>
-        <div className="ui equal width grid">
-          <h1>Edit</h1>
-          <div className="row">
-            <div className="column">
-              <div
-                style={{ fontWeight: 'bold', textAlign: 'center' }}
-                className="ui segment"
+      <div
+        className="container border border-primary shadow-lg p-3 mb-5 bg-white rounded"
+        style={{ marginTop: '50px' }}
+      >
+        <div style={container}>
+          <div className="container">
+            <div
+              className=" shadow-lg p-3 mb-5 rounded border border-primary"
+              style={{
+                width: '300px',
+                backgroundColor: '#d63447',
+                color: 'grey',
+              }}
+            >
+              <h1
+                style={{
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                }}
               >
-                <h1
-                  style={{
-                    textAlign: 'center',
-                    color: ' rgb(51, 122, 183)',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  Edit Customer
-                </h1>
-              </div>
+                Access
+              </h1>
             </div>
           </div>
-          <form className="ui form">
-            <div className="row">
-              <div className="col-6 col-md-4">
-                <label>First Name :</label>
-                <br></br>
-                <input
-                  placeholder="First Name"
-                  type="text"
-                  value={this.state.firstName}
-                  onChange={this.handleChange}
-                  name="firstName"
-                  className="form-control"
-                />
+          <div className="ui equal width grid">
+            <form className="ui form">
+              <div className="row">
+                <div className="col-6 col-md-4">
+                  <label>First Name :</label>
+                  <br></br>
+                  <input
+                    placeholder="First Name"
+                    type="text"
+                    value={this.state.firstName}
+                    onChange={this.handleChange}
+                    name="firstName"
+                    className="form-control"
+                  />
+                </div>
+                <div className="col-6 col-md-4">
+                  <label>Last Name:</label>
+                  <br></br>
+                  <input
+                    placeholder="Last Name"
+                    type="text"
+                    value={this.state.lastName}
+                    onChange={this.handleChange}
+                    name="lastName"
+                    className="form-control"
+                  />
+                </div>
+                <div className="col-6 col-md-4">
+                  <label>Email:</label>
+                  <br></br>
+                  <input
+                    placeholder="Email"
+                    type="email"
+                    value={this.state.email}
+                    onChange={this.handleChange}
+                    name="email"
+                    className="form-control"
+                  />
+                </div>
+                <div className="col-6 col-md-4">
+                  <label>Stream:</label>
+                  <br></br>
+                  <input
+                    placeholder="Stream"
+                    type="text"
+                    value={this.state.stream}
+                    onChange={this.handleChange}
+                    name="stream"
+                    className="form-control"
+                  />
+                </div>
+                <div className="col-6 col-md-4">
+                  <label>City:</label>
+                  <br></br>
+                  <input
+                    placeholder="City"
+                    type="text"
+                    value={this.state.city}
+                    onChange={this.handleChange}
+                    name="city"
+                    className="form-control"
+                  />
+                </div>
+                <div className="col-6 col-md-4">
+                  <label>Phone:</label>
+                  <br></br>
+                  <input
+                    placeholder="Phone"
+                    type="text"
+                    value={this.state.phone}
+                    onChange={this.handleChange}
+                    name="phone"
+                    className="form-control"
+                  />
+                </div>
+                <div className="col-6 col-md-4">
+                  <label>Experience:</label>
+                  <br></br>
+                  <input
+                    placeholder="Experience"
+                    type="text"
+                    value={this.state.experience}
+                    onChange={this.handleChange}
+                    name="experience"
+                    className="form-control"
+                  />
+                </div>
+                <div className="col-6 col-md-4">
+                  <label>Profession:</label>
+                  <br></br>
+                  <input
+                    placeholder="name"
+                    type="text"
+                    value={this.state.profession}
+                    onChange={this.handleChange}
+                    name="profession"
+                    className="form-control"
+                  />
+                </div>
+                <div className="col-6 col-md-4">
+                  <label>Access Allow:</label>
+                  <br />
+                  <select
+                    name="allowAccess"
+                    value={this.state.allowAccess}
+                    onChange={this.handleChange}
+                    style={{ marginRight: 10 }}
+                  >
+                    <option>Change the Status</option>
+                    {allowAccess}
+                  </select>
+                </div>
               </div>
-              <div className="col-6 col-md-4">
-                <label>Last Name:</label>
-                <br></br>
-                <input
-                  placeholder="Last Name"
-                  type="text"
-                  value={this.state.lastName}
-                  onChange={this.handleChange}
-                  name="lastName"
-                  className="form-control"
-                />
-              </div>
-              <div className="col-6 col-md-4">
-                <label>Email:</label>
-                <br></br>
-                <input
-                  placeholder="Email"
-                  type="email"
-                  value={this.state.email}
-                  onChange={this.handleChange}
-                  name="email"
-                  className="form-control"
-                />
-              </div>
-              <div className="col-6 col-md-4">
-                <label>Stream:</label>
-                <br></br>
-                <input
-                  placeholder="Stream"
-                  type="text"
-                  value={this.state.stream}
-                  onChange={this.handleChange}
-                  name="stream"
-                  className="form-control"
-                />
-              </div>
-              <div className="col-6 col-md-4">
-                <label>City:</label>
-                <br></br>
-                <input
-                  placeholder="City"
-                  type="text"
-                  value={this.state.city}
-                  onChange={this.handleChange}
-                  name="city"
-                  className="form-control"
-                />
-              </div>
-              <div className="col-6 col-md-4">
-                <label>Phone:</label>
-                <br></br>
-                <input
-                  placeholder="Phone"
-                  type="text"
-                  value={this.state.phone}
-                  onChange={this.handleChange}
-                  name="phone"
-                  className="form-control"
-                />
-              </div>
-              <div className="col-6 col-md-4">
-                <label>Experience:</label>
-                <br></br>
-                <input
-                  placeholder="Experience"
-                  type="text"
-                  value={this.state.experience}
-                  onChange={this.handleChange}
-                  name="experience"
-                  className="form-control"
-                />
-              </div>
-              <div className="col-6 col-md-4">
-                <label>Profession:</label>
-                <br></br>
-                <input
-                  placeholder="name"
-                  type="text"
-                  value={this.state.profession}
-                  onChange={this.handleChange}
-                  name="profession"
-                  className="form-control"
-                />
-              </div>
-              <div className="col-6 col-md-4">
-                <label>Access Allow:</label>
-                <br />
-                <select
-                  name="allowAccess"
-                  value={this.state.allowAccess}
-                  onChange={this.handleChange}
-                  style={{ marginRight: 10 }}
-                >
-                  <option>Change the Status</option>
-                  {allowAccess}
-                </select>
-              </div>
-            </div>
-            <br />
-            <br />
-            <button
-              type="submit"
-              className="btn btn-primary"
-              onClick={(e) => this.handleSubmit(e)}
-            >
-              Submit
-            </button>
-          </form>
+              <br />
+              <br />
+              <button
+                type="submit"
+                className="btn btn-warning"
+                onClick={(e) => this.handleSubmit(e)}
+              >
+                Submit
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     );

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
+import axios from 'axios';
+import decode from 'jwt-decode';
 
 const myStyle = { backgroundColor: '#d8345f', padding: '0px' };
 const myCol = {
@@ -16,12 +18,26 @@ class PHeader extends Component {
       loggedIn = false;
     }
     this.state = {
+      allowAccess: '',
       loggedIn,
     };
   }
+
+  componentDidMount() {
+    let id = decode(localStorage.getItem('token'))._id;
+    axios
+      .get(`http://localhost:5000/api/users/account/${id}`)
+      .then((response) => {
+        this.setState({
+          allowAccess: response.data.allowAccess,
+        });
+      });
+    console.log(this.state.allowAccess);
+  }
+
   render() {
     if (this.state.loggedIn === false) {
-      return <Redirect to="/professionalheader" />;
+      return <Redirect to="userheader" />;
     }
     return (
       <nav
@@ -37,68 +53,62 @@ class PHeader extends Component {
             justifyContent: 'center',
             padding: '0px',
             textAlign: 'center',
+            fontFamily: 'Lucida Console',
           }}
         >
           <div style={myCol} className="col ">
-            <Link style={{ fontSize: '20px', color: 'white' }} to="/home">
+            <Link style={{ fontSize: '17px', color: 'white' }} to="/">
               Home
             </Link>
           </div>
           <div style={myCol} className="col">
-            <Link style={{ fontSize: '20px', color: 'white' }} to="/contribute">
+            <Link style={{ fontSize: '17px', color: 'white' }} to="/contribute">
               Contribute
             </Link>
           </div>
+
           <div style={myCol} className="col">
-            <Link
-              style={{ fontSize: '20px', color: 'white' }}
-              to="/professionalfollower"
-            >
-              Follower
-            </Link>
-          </div>
-          <div style={myCol} className="col">
-            <Link style={{ fontSize: '20px', color: 'white' }} to="/mentor">
+            <Link style={{ fontSize: '17px', color: 'white' }} to="/mentor">
               Mentor
             </Link>
           </div>
 
           <div style={myCol} className="col">
-            <Link style={{ fontSize: '20px', color: 'white' }} to="/message">
+            <Link style={{ fontSize: '17px', color: 'white' }} to="/message">
               Message
             </Link>
           </div>
           <div style={myCol} className="col">
-            <Link style={{ fontSize: '20px', color: 'white' }} to="/feed">
+            <Link style={{ fontSize: '17px', color: 'white' }} to="/feed">
               Feed
             </Link>
           </div>
           <div style={myCol} className="col">
             <Link
-              style={{ fontSize: '20px', color: 'white' }}
+              style={{ fontSize: '17px', color: 'white' }}
               to="/professionalrequest"
             >
               Request
             </Link>
           </div>
           <div style={myCol} className="col">
-            <Link style={{ fontSize: '20px', color: 'white' }} to="/highrated">
+            <Link style={{ fontSize: '17px', color: 'white' }} to="/highrated">
               High Rated
             </Link>
           </div>
           <div style={myCol} className="col">
-            <Link style={{ fontSize: '20px', color: 'white' }} to="/myProfile">
+            <Link style={{ fontSize: '17px', color: 'white' }} to="/myProfile">
               Profile
             </Link>
           </div>
           <div style={myCol} className="col">
-            <Link style={{ fontSize: '20px', color: 'white' }} to="/about">
+            <Link style={{ fontSize: '17px', color: 'white' }} to="/about">
               About
             </Link>
           </div>
 
           <div style={myCol} className="col">
-            <Link style={{ fontSize: '20px', color: 'white' }} to="/logout">
+            <Link style={{ fontSize: '17px', color: 'white' }} to="/logout">
               Logout
             </Link>
           </div>

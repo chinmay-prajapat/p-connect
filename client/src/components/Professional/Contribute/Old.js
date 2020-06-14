@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import decode from 'jwt-decode';
+import moment from 'moment';
 import { Document, Page } from 'react-pdf';
 // import generateData from '../generateData';
 import { Link } from 'react-router-dom';
@@ -36,18 +37,17 @@ class Old extends Component {
   componentDidMount() {
     const id = decode(localStorage.getItem('token'))._id;
     axios
-      .get(`http://localhost:5000/api/users/getContribution/${id}`)
+      .get(`http://localhost:5000/api/contribute/myfeed/${id}`)
       .then((response) => {
         console.log(response.data);
         this.setState({
           data: response.data,
         });
+        console.log(this.state.data);
       })
       .catch((err) => {
         console.log(err);
       });
-
-    console.log(this.data);
   }
   render() {
     // const { data } = this.state;
@@ -57,76 +57,54 @@ class Old extends Component {
     return (
       <div className="card">
         <div className="header" align="center">
-          <h1
-            style={{
-              textAlign: 'center',
-              color: ' black',
-              fontWeight: 'bold',
-              padding: '20px',
-            }}
+          <div
+            className="container "
+            style={{ textAlign: 'center', width: '300px', margin: '20px 0px' }}
           >
-            My Feed
-          </h1>
+            <div className=" shadow-lg p-3 mb-5 bg-white rounded border border-primary">
+              <h1 style={{ fontWeight: 'bold' }}>My Feed</h1>
+            </div>
+          </div>
         </div>
         <div className="content table-responsive table-full-width">
           <table className="table table-hover ">
             <thead className="thead-dark">
               <tr>
+                <th>Time</th>
                 <th filter={{ type: 'TextFilter' }} dataSort>
                   Title
                 </th>
-                <th>Links</th>
+
                 <th>Description</th>
 
-                {/* <th
-                  className="text-right"
-                  data-checkbox="true"
-                  data-search="true"
-                >
-                  Salary
-                </th> */}
+                <th>Links</th>
 
                 <th>Document</th>
-
-                <th>Document Link</th>
-                <th>Delete</th>
               </tr>
             </thead>
             <tbody style={{ boxShadow: '2px 2px 2px grey' }}>
               {data.map((data) => (
                 <tr style={{}}>
+                  <td>
+                    {moment(data.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
+                  </td>
                   <td>{data.title}</td>
+
+                  <td>{data.description}</td>
+
                   <td>
                     {' '}
                     <a href={data.link} target="blank">
                       {data.link}
                     </a>
                   </td>
-
-                  <td>{data.description}</td>
-                  <td>{data.document}</td>
-
-                  <a href={data.location} target="blank">
-                    {data.location}
-                  </a>
-
-                  {/* <td className="text-right">$ {data.salary}</td> */}
-                  {/* <td>
-                    <button>
-                      <Link
-                        to={{
-                          pathname: `/MyCustom/${data._id}`,
-                          state: { data },
-                        }}
-                        style={{ color: '#0000ff', fontSize: '15px' }}
-                      >
-                        Edit
-                      </Link> */}
-
-                  {/* <i className="fa fa-remove"></i> */}
-                  {/* </button>
-                  </td> */}
                   <td>
+                    <a href={data.location} target="blank">
+                      View Document
+                    </a>
+                  </td>
+
+                  {/* <td>
                     <button
                       // rel="tooltip"
                       // className="btn btn-info btn-simple btn-xs"
@@ -135,9 +113,9 @@ class Old extends Component {
                       style={{ color: 'red', fontSize: '15px' }}
                     >
                       Delete
-                      {/* <i className="fa fa-remove"></i> */}
+                  
                     </button>
-                  </td>
+                  </td> */}
                 </tr>
               ))}
             </tbody>

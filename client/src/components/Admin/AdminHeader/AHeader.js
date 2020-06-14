@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const myStyle = { backgroundColor: '#d8345f', padding: '0px' };
 const myCol = {
   display: 'block',
-  padding: '10px 10px',
+  padding: '20px 10px',
   float: 'left',
 };
 class AHeader extends Component {
@@ -13,60 +13,81 @@ class AHeader extends Component {
   }
   render() {
     return (
-      <nav className="container-fluid" style={{ padding: '0px 0px' }}>
+      <nav
+        className="container-fluid"
+        style={{ padding: '0px 0px', borderRadius: '30px' }}
+      >
         <div
           className="container-fluid row"
           style={{
-            backgroundColor: '#10375c',
+            backgroundColor: '#e84a5f',
             margin: '0px',
+
             display: 'inlinegrid',
             justifyContent: 'center',
             padding: '0px',
             textAlign: 'center',
+            fontFamily: 'Lucida Console',
           }}
         >
           <div style={myCol} className="col ">
-            <Link style={{ fontSize: '20px', color: 'white' }} to="/home">
+            <Link style={{ fontSize: '17px', color: 'white' }} to="/feed">
               Home
             </Link>
           </div>
           <div style={myCol} className="col">
-            <Link
-              style={{ fontSize: '20px', color: 'white' }}
-              to="/transcation"
-            >
-              Transcation
+            <Link style={{ fontSize: '17px', color: 'white' }} to="/highrated">
+              High Rated
             </Link>
           </div>
+          {/* <div style={myCol} className="col">
+            <Link style={{ fontSize: '17px', color: 'white' }} to="/session">
+              Session
+            </Link>
+          </div> */}
           <div style={myCol} className="col">
-            <Link
-              style={{ fontSize: '20px', color: 'white' }}
-              to="/adminMessage"
-            >
-              Message
+            <Link style={{ fontSize: '17px', color: 'white' }} to="/allowed">
+              Active
             </Link>
           </div>
+
           <div style={myCol} className="col">
             <Link
-              style={{ fontSize: '20px', color: 'white' }}
+              style={{ fontSize: '17px', color: 'white' }}
               to="/profileRequest"
             >
               Request
             </Link>
           </div>
           <div style={myCol} className="col">
-            <Link style={{ fontSize: '20px', color: 'white' }} to="/subscriber">
+            <Link style={{ fontSize: '17px', color: 'white' }} to="/subscriber">
               Subscriber
             </Link>
           </div>
           <div style={myCol} className="col">
-            <Link style={{ fontSize: '20px', color: 'white' }} to="/mentor">
+            <Link
+              style={{ fontSize: '17px', color: 'white' }}
+              to="/nsubscriber"
+            >
+              N-Subscriber
+            </Link>
+          </div>
+          <div style={myCol} className="col">
+            <Link style={{ fontSize: '17px', color: 'white' }} to="/mentor">
               Mentor
+            </Link>
+          </div>
+          <div style={myCol} className="col">
+            <Link
+              style={{ fontSize: '17px', color: 'white' }}
+              to="/adminMessage"
+            >
+              Message
             </Link>
           </div>
 
           <div style={myCol} className="col">
-            <Link style={{ fontSize: '20px', color: 'white' }} to="/logout">
+            <Link style={{ fontSize: '17px', color: 'white' }} to="/logout">
               Logout
             </Link>
           </div>

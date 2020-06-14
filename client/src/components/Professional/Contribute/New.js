@@ -151,23 +151,12 @@ class New extends Component {
               onChange={this.onFileChange}
             />
           </div>
-          <div className="col">
+          <div className="col" style={{ padding: '30px 0px' }}>
             <input
-              style={{
-                display: 'flex',
-                lineHeight: '30px',
-                justifyContent: 'center',
-                margin: '40px 0px',
-                width: '100px',
-                padding: '10px',
-                color: 'white',
-
-                backgroundColor: '#d7385e',
-                borderRadius: '5px',
-              }}
               type="submit"
               name="submit"
               value="submit"
+              className="btn btn-primary"
               onClick={this.onFormSubmit}
             />
           </div>

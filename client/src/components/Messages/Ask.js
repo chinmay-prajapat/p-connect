@@ -27,6 +27,11 @@ class Message extends Component {
 
       sender: decode(localStorage.getItem('token'))._id,
     };
+
+    this.setState({
+      description: '',
+      question: '',
+    });
     const id = decode(localStorage.getItem('token'))._id;
     axios
 
@@ -43,9 +48,6 @@ class Message extends Component {
           .catch((err) => {
             console.log(err);
           });
-        this.setState({
-          sent: 1,
-        });
       })
       .catch((err) => {
         console.log(err);
@@ -76,7 +78,7 @@ class Message extends Component {
     }));
   };
   render() {
-    return this.state.sent === 0 ? (
+    return (
       <div
         style={{
           boxShadow: '0px 2px 3px 3px grey',
@@ -88,11 +90,10 @@ class Message extends Component {
         className="container"
       >
         <div>
-          <p>
-            {this.props.location.state.firstName}
-
-            {this.props.location.state.lastName}
-          </p>
+          <pre>
+            {this.props.location.state.firstName.toUpperCase()}{' '}
+            {this.props.location.state.lastName.toUpperCase()}
+          </pre>
           <p> </p>
         </div>
         <div className="form-group">
@@ -124,8 +125,6 @@ class Message extends Component {
           Submit
         </button>
       </div>
-    ) : (
-      <div>Your Message has been sent Succesfully !</div>
     );
   }
 }

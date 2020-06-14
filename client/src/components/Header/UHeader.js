@@ -7,7 +7,7 @@ import Header from '../Header/Header';
 const myStyle = { backgroundColor: '#10375c', padding: '0px' };
 const myCol = {
   display: 'block',
-  padding: '10px 10px',
+  padding: '20px 10px',
   float: 'left',
 };
 class UserHeader extends Component {
@@ -55,40 +55,41 @@ class UserHeader extends Component {
               justifyContent: 'center',
               padding: '0px',
               textAlign: 'center',
+              fontFamily: 'Lucida Console',
             }}
           >
             <div style={myCol} className="col ">
-              <Link style={{ fontSize: '20px', color: 'white' }} to="/home">
+              <Link style={{ fontSize: '17px', color: 'white' }} to="/">
                 Home
               </Link>
             </div>
             <div style={myCol} className="col">
-              <Link style={{ fontSize: '20px', color: 'white' }} to="/mentor">
+              <Link style={{ fontSize: '17px', color: 'white' }} to="/mentor">
                 Mentor
               </Link>
             </div>
 
             <div style={myCol} className="col">
-              <Link style={{ fontSize: '20px', color: 'white' }} to="/message">
+              <Link style={{ fontSize: '17px', color: 'white' }} to="/message">
                 Message
               </Link>
             </div>
             <div style={myCol} className="col">
-              <Link style={{ fontSize: '20px', color: 'white' }} to="/feed">
+              <Link style={{ fontSize: '17px', color: 'white' }} to="/feed">
                 Feed
               </Link>
             </div>
             <div style={myCol} className="col">
               <Link
-                style={{ fontSize: '20px', color: 'white' }}
-                to="/highrating"
+                style={{ fontSize: '17px', color: 'white' }}
+                to="/highrated"
               >
                 High Rated
               </Link>
             </div>
             <div style={myCol} className="col">
               <Link
-                style={{ fontSize: '20px', color: 'white' }}
+                style={{ fontSize: '17px', color: 'white' }}
                 to="/myProfile"
               >
                 Profile
@@ -96,13 +97,13 @@ class UserHeader extends Component {
             </div>
 
             <div style={myCol} className="col">
-              <Link style={{ fontSize: '20px', color: 'white' }} to="/about">
+              <Link style={{ fontSize: '17px', color: 'white' }} to="/about">
                 About
               </Link>
             </div>
 
             <div style={myCol} className="col">
-              <Link style={{ fontSize: '20px', color: 'white' }} to="/logout">
+              <Link style={{ fontSize: '17px', color: 'white' }} to="/logout">
                 Logout
               </Link>
             </div>
